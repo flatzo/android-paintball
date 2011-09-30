@@ -18,6 +18,8 @@ package com.game;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,6 +33,10 @@ public class HelloWorld implements ApplicationListener {
 	BitmapFont font;
 	Vector2 textPosition = new Vector2(100, 100);
 	Vector2 textDirection = new Vector2(1, 1);
+	
+	//Audio
+	Music music;
+	Sound sound;
 
 	@Override
 	public void create () {
@@ -38,12 +44,24 @@ public class HelloWorld implements ApplicationListener {
 		font.setColor(Color.RED);
 		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 		spriteBatch = new SpriteBatch();
+		
+		//Define the audio source
+		music = Gdx.audio.newMusic(Gdx.files.internal("data/music.mp3"));
+		sound = Gdx.audio.newSound(Gdx.files.internal("data/sound.ogg"));
+		music.setLooping(true);
+		music.setVolume(0.2f);
+		music.play();
 	}
 
 	@Override
 	public void render () {
 		int centerX = Gdx.graphics.getWidth() / 2;
 		int centerY = Gdx.graphics.getHeight() / 2;
+		
+		
+		//Testing the touch listener of libgdx and play sound
+		if(Gdx.input.justTouched())
+			sound.play();
 
 		Gdx.graphics.getGL10().glClear(GL10.GL_COLOR_BUFFER_BIT);
 
@@ -85,17 +103,31 @@ public class HelloWorld implements ApplicationListener {
 
 	@Override
 	public void pause () {
+	
+		//Close the music and sound
+		music.dispose();
+		sound.dispose();
 
 	}
 
 	@Override
 	public void resume () {
+		
+		//Play music and sound
+		music.play();
+		sound.play();
 
 	}
 
 	@Override
 	public void dispose () {
+		
+		//Close the music and sound
+		music.dispose();
+		sound.dispose();
 
 	}
+	
+	
 
 }
