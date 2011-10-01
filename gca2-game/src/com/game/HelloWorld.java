@@ -251,7 +251,6 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
 		
-		mCam.zoom = -3f;
 		return false;
 	}
 
