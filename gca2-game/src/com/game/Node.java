@@ -56,8 +56,10 @@ public class Node {
 		*/
 	}
 
-	public void update(Stage stage) {
-		
+	
+	//bool true if you can delete it. 
+	public boolean update(Stage stage) {
+		return false;
 	}
 
 	public Vector2 getRelativePosition() {

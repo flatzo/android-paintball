@@ -55,7 +55,11 @@ public class RenderTree {
 		public void draw() {
 			
 			for (int i = 0; i < children.size(); i++) {
-				children.get(i).update(mStage);
+				if (children.get(i).update(mStage) ) {
+					Node node = children.get(i);
+					children.remove(i);
+					mStage.removeActor(mStage.findActor(node.getName()));
+				}
 			}
 			mStage.draw();
 			//children.get(0).draw(0,0);
