@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actors.Image;
 import com.badlogic.gdx.scenes.scene2d.actors.Label;
 import com.badlogic.gdx.scenes.scene2d.actors.Image.*;
+import com.badlogic.gdx.scenes.scene2d.actors.*;
 
 public class Node {
 	// sprite
@@ -25,16 +26,16 @@ public class Node {
 	final int BACK = 0;
 	final int FRONT = 1;
 	
-	public Node(Vector3 position, String nameOfNode,  Texture texture , Vector2 distancePerRender) {
+	public Node(Vector3 position, String nameOfNode,  Texture texture , Vector2 distancePerRender, Stage stage) {
 		mImage = new Image(nameOfNode, texture);
-		mImage.scaleX= 3f;
-		mImage.scaleY = 3f;
 		mDistancePerRender = distancePerRender; 
 		
 		mName = nameOfNode;
-		relativePosition = position;
+		//relativePosition = position;
 		mImage.x= position.x;
 		mImage.y = position.y;
+		
+		stage.addActor(mImage) ;
 
 		/*
 		if (position.x >= Gdx.graphics.getWidth()) {

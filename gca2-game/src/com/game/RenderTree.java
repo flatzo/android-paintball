@@ -38,21 +38,18 @@ public class RenderTree {
 		//children.add(new Node(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), mT));
 		}
 	
-	public void addProjectile( Vector2 positionDoigtUnderFinger, Vector3 cameraPositionUnderFinger, Vector3 positionJoueur) {
+	public void addProjectile( Vector2 positionDoigt, Vector2 positionJoueur) {
 		
-		Vector2 beginningPosition = new Vector2(cameraPositionUnderFinger.x, cameraPositionUnderFinger.y);// mStage.findActor("mainChar").x, mStage.findActor("mainChar").y);
+		//Vector2 beginningPosition = new Vector2(positionJoueur.x, positionJoueur.y);// mStage.findActor("mainChar").x, mStage.findActor("mainChar").y);
 		Vector2 distanceAParcourir = new Vector2 (
-				(  positionDoigtUnderFinger.x - beginningPosition.x ),
-				( Gdx.graphics.getWidth()/2 + positionDoigtUnderFinger.y - beginningPosition.y)
+				(  (positionDoigt.x - Gdx.graphics.getWidth()/2) ),
+				(  (positionDoigt.y) *(-2) + Gdx.graphics.getHeight())  //tentatives
 				);
 		
-		//distanceAParcourir.nor();
+		//distanceAParcourir.nor(); //decommenter seulement si vous avez un t/l/phone assez puissant 
 		
-		Projectile nouveauProjectile = new Projectile( beginningPosition, distanceAParcourir, positionJoueur); 
+		Projectile nouveauProjectile = new Projectile( distanceAParcourir, positionJoueur, mStage); 
 		children.add(nouveauProjectile);
-		
-		
-		mStage.addActor(nouveauProjectile.getImage());
 		
 	}
 		public void draw() {

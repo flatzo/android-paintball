@@ -252,22 +252,21 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		mNumberOfFingers++;
 		
 		//underFinger
-		mRenderTree.addProjectile(
+		if ( mNumberOfFingers == 1 ) {
+			mRenderTree.addProjectile(
 				
 				new Vector2(touchPosition.x,
-						(Gdx.graphics.getHeight()/2 - touchPosition.y) - Gdx.graphics.getHeight()/2),
+						(touchPosition.y) ),
 				
-				new Vector3(
+				new Vector2(
 				mRenderTree.getStage().findActor("mainChar").x,
-				mRenderTree.getStage().findActor("mainChar").y,
-				0)
-				,
-				new Vector3( mRenderTree.getStage().findActor("mainChar").x, mRenderTree.getStage().findActor("mainChar").y, 1)
+				mRenderTree.getStage().findActor("mainChar").y )
+				);
 				//underFinger
 				
 				//mRenderTree.addProjectile(positionDoigtUnderFinger, cameraPositionUnderFinger)
-		);
-		
+					
+		}
 		//Verify the number of finger and the pointer 
 		if(mNumberOfFingers == 1 && pointer == 0 && isOnThePlayer(x,y))
 		{
