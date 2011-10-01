@@ -66,7 +66,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	List<Image> images = new ArrayList<Image>();
     
     //Deplacement du mainChar
-	float mcharSpeed = 4.0f;
+	float mcharSpeed = 2.5f;
     int mInputX;
 	int mInputYinverse;
 	int mInputY;
@@ -273,9 +273,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		Vector2 touchPosition = new Vector2(x, y);
 
 		
-		
-		
-		
+	
 		//Increment the number of fingers
 		mNumberOfFingers++;
 		
@@ -286,13 +284,8 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		       mFingerOnePointer = pointer;
 		       mFingerOne.set(x, y, 0);
 		       
-		       mInputX = x;
-		       mInputYinverse = y;
-		       mInputY = Gdx.graphics.getHeight() - mInputYinverse;
-						       
-		       directionPerso = new Vector3(mInputX-(Gdx.graphics.getWidth()/2),
-		    		   						mInputY-(Gdx.graphics.getHeight()/2),0);
-		       directionPerso.nor();
+		       
+		       //directionPerso.nor();
 		       
 		       //Vector2 distanceTravelled = mRenderTree.getMainCharacter().moveToward(new Vector2(x, Gdx.graphics.getHeight()-y));
 		       
@@ -322,7 +315,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 					       
 	       directionPerso = new Vector3(mInputX-(Gdx.graphics.getWidth()/2),
 	    		   						mInputY-(Gdx.graphics.getHeight()/2),0);
-	       directionPerso.nor();
+	      directionPerso.nor();
 		}
 
 		return false;
