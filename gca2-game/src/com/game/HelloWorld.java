@@ -50,7 +50,8 @@ import com.badlogic.gdx.scenes.scene2d.actors.Image;
 import com.badlogic.gdx.scenes.scene2d.actors.Label;
 import com.badlogic.gdx.math.collision.Sphere;
 import com.badlogic.gdx.math.collision.*;
-
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Intersector;
 
 public class HelloWorld implements ApplicationListener, InputProcessor {
 	
@@ -252,7 +253,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		mNumberOfFingers++;
 		
 		//underFinger
-		if ( mNumberOfFingers == 1 ) {
+		if ( !isOnThePlayer(x,y)) {
 			mRenderTree.addProjectile(
 				
 				new Vector2(touchPosition.x,
@@ -262,6 +263,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 				mRenderTree.getStage().findActor("mainChar").x,
 				mRenderTree.getStage().findActor("mainChar").y )
 				);
+			sound.play();
 				//underFinger
 				
 				//mRenderTree.addProjectile(positionDoigtUnderFinger, cameraPositionUnderFinger)
@@ -281,7 +283,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		}
 		else if(mNumberOfFingers == 2 && pointer == 1 && isOnThePlayer)
 		{
-            sound.play();
+            
             //Vector3 worldCoordonate = new Vector3(touchPosition.x, touchPosition.y, 0);
            // mCamera.unproject(worldCoordonate);
 			//mRenderTree.addProjectile(new Vector2(worldCoordonate.x, worldCoordonate.y) , new Vector3(
@@ -386,18 +388,19 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	 */
 	private boolean isOnThePlayer(int x, int y){
 		
-		float fingerX = x, fingerY = Gdx.graphics.getHeight() - y;
-		float playerX = mRenderTree.getStage().findActor("mainChar").x, playerY = mRenderTree.getStage().findActor("mainChar").y;
 		
-		Sphere sphereFinger = new Sphere(new Vector3(fingerX,fingerY,0),10);
-		Sphere spherePlayer = new Sphere(new Vector3(playerX,playerY,0),10);
+		float fingerX = x, fingerY = Gdx.graphics.getHeight() - y;
+		float playerX = Gdx.graphics.getWidth()/2, playerY = Gdx.graphics.getHeight()/2;
+		
+		Sphere sphereFinger = new Sphere(new Vector3(fingerX,fingerY,0),20);
+		Sphere spherePlayer = new Sphere(new Vector3(playerX,playerY,0),20);
 		if(sphereFinger.overlaps(spherePlayer)){
 			isOnThePlayer = true;
 			return true;
 		}
 		else{
-			isOnThePlayer = true;
-			return true;
+			isOnThePlayer = false;
+			return false;
 		}
 			
 			
