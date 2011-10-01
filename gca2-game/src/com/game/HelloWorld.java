@@ -63,24 +63,19 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
     private Texture mTexture;
     
 
-    // OrthoCamController camController;
-    //Vector3 mCamDirection = new Vector3(1, 1, 0);
-    //Vector2 mMaxCamPosition = new Vector2(0, 0);
-    
+    // TileMap :)
 	TileMapRenderer mTileMapRenderer;
     TiledMap mMap;
     TileAtlas mAtlas;
-    
 	
 	//Audio
 	Music music;
 	Sound sound;
-	
-	//Camera orthographic
-	//OrthographicCamera mCam;
-	CharacterCamera mCamera;
-	//private Rectangle glViewport;
 
+	// Camera
+	CharacterCamera mCamera;
+
+	// Constants
 	static final int WIDTH  = 480;
     static final int HEIGHT = 320;
 
@@ -155,110 +150,24 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		//Texture
 		mTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 
+		// TODO Add support for different screen ratios.
 		glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
 
 		
-		//this.create_tiledMap();
+		this.create_tiledMap();
 		
-		
-		//this.create_tiledMap();
-
 		
 	}
 
 	@Override
 	public void render () {
-		
-
-		
 		GL10 gl = Gdx.graphics.getGL10();
 		
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		//gl.glViewport((int) (glViewport.x+mRenderTree.getMainCharacter().getRelativePosition().x), (int) (glViewport.y+mRenderTree.getMainCharacter().getRelativePosition().y),
-		//		(int) (glViewport.width+mRenderTree.getMainCharacter().getRelativePosition().x), (int)(glViewport.height+mRenderTree.getMainCharacter().getRelativePosition().y) );
 		
-		//mCamera.update();
-		//mCamera.apply(gl);
-		//mRenderTree.draw();
+		this.mTileMapRenderer.render(this.mCamera);
 		
-		stage.draw();
-		//mTileMapRenderer.render(mCamera/*mCam*/);// , layersList);
-
-		
-		//mTileMapRenderer.render(mCam);// , layersList);
-
-		
-		/*
-		 * spriteBatch.begin();
-		font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 20, 20);
-		font.draw(spriteBatch, "InitialCol, LastCol: " + mTileMapRenderer.getInitialCol() + "," + mTileMapRenderer.getLastCol(), 20,
-			40);
-		font.draw(spriteBatch, "InitialRow, LastRow: " + mTileMapRenderer.getInitialRow() + "," + mTileMapRenderer.getLastRow(), 20,
-			60);
-
-		tmp.set(0, 0, 0);
-		
-		//mCam.unproject(tmp);
-		mCamera.unproject(tmp);
-		font.draw(spriteBatch, "Location: " + tmp.x + "," + tmp.y, 20, 80);
-		spriteBatch.end();
-		
-		*/
-		
-		
-		
-		
-		//mCamera.focusOn(mRenderTree.getMainCharacter() );
-		 
-		
-		//int centerX = Gdx.graphics.getWidth() / 2;
-		//int centerY = Gdx.graphics.getHeight() / 2;
-		
-		//Get the gl version instance
-
-		//gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		
-		
-        
-        // Texturing --------------------- /
-        //gl.glActiveTexture(GL10.GL_TEXTURE0);
-        //gl.glEnable(GL10.GL_TEXTURE_2D);
-        //texture.bind();
-
-
-		// more fun but confusing :)
-		// textPosition.add(textDirection.tmp().mul(Gdx.graphics.getDeltaTime()).mul(60));
-		//textPosition.x += textDirection.x * Gdx.graphics.getDeltaTime() * 60;
-		//textPosition.y += textDirection.y * Gdx.graphics.getDeltaTime() * 60;
-/*
-		if (textPosition.x < 0) {
-			textDirection.x = -textDirection.x;
-			textPosition.x = 0;
-		}
-		if (textPosition.x > Gdx.graphics.getWidth()) {
-			textDirection.x = -textDirection.x;
-			textPosition.x = Gdx.graphics.getWidth();
-		}
-		if (textPosition.y < 0) {
-			textDirection.y = -textDirection.y;
-			textPosition.y = 0;
-		}
-		if (textPosition.y > Gdx.graphics.getHeight()) {
-			textDirection.y = -textDirection.y;
-			textPosition.y = Gdx.graphics.getHeight();
-		}
-
-		spriteBatch.begin();
-		spriteBatch.setColor(Color.WHITE);
-		*/
-		/*spriteBatch.draw(texture, centerX - texture.getWidth() / 2, centerY - texture.getHeight() / 2, 0, 0, texture.getWidth(),
-			texture.getHeight());
-		
-		spriteBatch.draw(texture, 10, 10);
-		font.draw(spriteBatch, "hello", (int)textPosition.x, (int)textPosition.y);
-		spriteBatch.end();
-		*/
+		//stage.draw();
 		
 	}
 

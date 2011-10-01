@@ -29,6 +29,7 @@
 package com.game;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 
