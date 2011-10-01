@@ -251,6 +251,22 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		//Increment the number of fingers
 		mNumberOfFingers++;
 		
+		//underFinger
+		mRenderTree.addProjectile(
+				
+				new Vector2(touchPosition.x,
+						(Gdx.graphics.getHeight()/2 - touchPosition.y) - Gdx.graphics.getHeight()/2),
+				
+				new Vector3(
+				mRenderTree.getStage().findActor("mainChar").x,
+				mRenderTree.getStage().findActor("mainChar").y,
+				0)
+				,
+				new Vector3( mRenderTree.getStage().findActor("mainChar").x, mRenderTree.getStage().findActor("mainChar").y, 1)
+				//underFinger
+				
+				//mRenderTree.addProjectile(positionDoigtUnderFinger, cameraPositionUnderFinger)
+		);
 		
 		//Verify the number of finger and the pointer 
 		if(mNumberOfFingers == 1 && pointer == 0 && isOnThePlayer(x,y))
@@ -267,12 +283,10 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		else if(mNumberOfFingers == 2 && pointer == 1 && isOnThePlayer)
 		{
             sound.play();
-			mRenderTree.addProjectile(touchPosition , new Vector3(
+            //Vector3 worldCoordonate = new Vector3(touchPosition.x, touchPosition.y, 0);
+           // mCamera.unproject(worldCoordonate);
+			//mRenderTree.addProjectile(new Vector2(worldCoordonate.x, worldCoordonate.y) , new Vector3(
 			
-					mRenderTree.getStage().findActor("mainChar").x,
-					mRenderTree.getStage().findActor("mainChar").y,
-					0)
-			);
 		}
 
 		return false;
