@@ -16,6 +16,7 @@
 
 package com.game;
 
+import com.game.*;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -66,7 +67,8 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	
 	//Camera orthographic
 	OrthographicCamera mCam;
-	private Rectangle glViewport;
+	CharacterCamera mCamera;
+	//private Rectangle glViewport;
 
 	static final int WIDTH  = 480;
     static final int HEIGHT = 320;
@@ -108,9 +110,15 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		
 		//Define the orthographic cam
 		mCam = new OrthographicCamera(WIDTH,HEIGHT);
-		mCam.position.set(WIDTH / 2, HEIGHT / 2, 0);
+		mCamera = new CharacterCamera(mRenderTree.getMainCharacter());
 		
-		glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
+		//after initialization of the renderTree,
+		//so that position of the mainCharacter
+		//is set.
+		
+		//mCam.position.set(mRenderTree.getMainCharacterPosition().x, mRenderTree.getMainCharacterPosition().y, 10);
+		
+		//glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
 		
 		//Texture
 		mTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
@@ -266,12 +274,18 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		//Play sound effect
 		
 		
+		
+		
 		//For pinch-to-zoom
 		mNumberOfFingers++;
 		if(mNumberOfFingers == 1)
 		{
 		       mFingerOnePointer = pointer;
 		       mFingerOne.set(x, y, 0);
+		       
+		       mRenderTree.getMainCharacter().moveToward(new Vector2(x, y));
+		       mCamera.focusOn(mRenderTree.getMainCharacter() );
+		       
 		}
 		else if(mNumberOfFingers == 2)
 		{
