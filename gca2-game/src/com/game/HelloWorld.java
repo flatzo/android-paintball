@@ -56,19 +56,18 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	Vector2 textPosition = new Vector2(100, 100);
 	Vector2 textDirection = new Vector2(1, 1);
 	RenderTree mRenderTree;
-	
+
 	Stage stage;
 	List<Image> images = new ArrayList<Image>();
-	
-    private Texture mTexture;
-    
 
-    // TileMap :)
+	private Texture mTexture;
+
+	// TileMap :)
 	TileMapRenderer mTileMapRenderer;
-    TiledMap mMap;
-    TileAtlas mAtlas;
-	
-	//Audio
+	TiledMap mMap;
+	TileAtlas mAtlas;
+
+	// Audio
 	Music music;
 	Sound sound;
 
@@ -76,15 +75,12 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	CharacterCamera mCamera;
 
 	// Constants
-	static final int WIDTH  = 480;
-    static final int HEIGHT = 320;
+	static final int WIDTH = 480;
+	static final int HEIGHT = 320;
 
-	
 	Vector3 tmp = new Vector3();
 	Vector3 spritePosition = new Vector3();
-	
-	
-	
+
 	// for pinch-to-zoom
 	int mNumberOfFingers = 0;
 	int mFingerOnePointer;
@@ -92,83 +88,85 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	float mLastDistance = 0;
 	Vector3 mFingerOne = new Vector3();
 	Vector3 mFingerTwo = new Vector3();
-	
+
 	private Rectangle glViewport;
 
-	//Stage - Actors
-	
+	// Stage - Actors
 
 	@Override
-	public void create () {
-		
-		//Stage pour scene2D
-		stage = new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),false);
+	public void create() {
+
+		// Stage pour scene2D
+		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
+				false);
 		Texture mT = new Texture(Gdx.files.internal("data/ball.png"));
 		Texture mT2 = new Texture(Gdx.files.internal("data/badlogic.jpg"));
-		Image backGround = new Image("background", mT2);		
+		Image backGround = new Image("background", mT2);
 		Image mainChar = new Image("mainChar", mT);
-		mainChar.x = Gdx.graphics.getWidth()/2;
-		mainChar.y = Gdx.graphics.getHeight()/2;
-		backGround.x = Gdx.graphics.getWidth()/2;
-		backGround.y = Gdx.graphics.getHeight()/2;
+		mainChar.x = Gdx.graphics.getWidth() / 2;
+		mainChar.y = Gdx.graphics.getHeight() / 2;
+		backGround.x = Gdx.graphics.getWidth() / 2;
+		backGround.y = Gdx.graphics.getHeight() / 2;
 		backGround.scaleX = 3f;
 		backGround.scaleY = 3f;
 		stage.addActor(backGround);
 		stage.addActor(mainChar);
-		
-		
+
 		Gdx.input.setInputProcessor(this);
 		font = new BitmapFont();
 		font.setColor(Color.RED);
-		
-		
-		
+
 		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 		spriteBatch = new SpriteBatch();
-		
+
 		mRenderTree = new RenderTree();
-		
-		//Define the audio source
+
+		// Define the audio source
 		music = Gdx.audio.newMusic(Gdx.files.internal("data/music.mp3"));
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/sound.ogg"));
 		music.setLooping(true);
 		music.setVolume(0.2f);
 		music.play();
-		
-		//Define the orthographic cam
-		//mCam = new OrthographicCamera(WIDTH,HEIGHT);
+
+		// Define the orthographic cam
+		// mCam = new OrthographicCamera(WIDTH,HEIGHT);
 		mCamera = new CharacterCamera(mRenderTree.getMainCharacter());
-		
-		//after initialization of the renderTree,
-		//so that position of the mainCharacter
-		//is set.
-		
-		//mCam.position.set(mRenderTree.getMainCharacterPosition().x, mRenderTree.getMainCharacterPosition().y, 10);
-		
-		//glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
-		
-		//Texture
+
+		// after initialization of the renderTree,
+		// so that position of the mainCharacter
+		// is set.
+
+		// mCam.position.set(mRenderTree.getMainCharacterPosition().x,
+		// mRenderTree.getMainCharacterPosition().y, 10);
+
+		// glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
+
+		// Texture
 		mTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 
 		// TODO Add support for different screen ratios.
 		glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
 
-		
 		this.create_tiledMap();
-		
-		
+
+		this.mCamera.position.set(new Vector3(this.mTileMapRenderer
+				.getMapWidthUnits() / 2, this.mTileMapRenderer
+				.getMapHeightUnits() / 2, 0));
+		this.mCamera.update();
+
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		GL10 gl = Gdx.graphics.getGL10();
-		
+
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
+
+		this.mCamera.apply(gl);
 		this.mTileMapRenderer.render(this.mCamera);
-		
-		//stage.draw();
-		
+
+		// stage.draw();
+
 	}
 
 	@Override
@@ -180,31 +178,31 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	}
 
 	@Override
-	public void pause () {
-		
-		//Remove number of fingers
+	public void pause() {
+
+		// Remove number of fingers
 		mNumberOfFingers = 0;
-		
-		//Close the music and sound
+
+		// Close the music and sound
 		music.dispose();
 		sound.dispose();
 
 	}
 
 	@Override
-	public void resume () {
+	public void resume() {
 		create();
-		
-		//Play music and sound
+
+		// Play music and sound
 		music.play();
 		sound.play();
 
 	}
 
 	@Override
-	public void dispose () {
-		
-		//Close the music and sound
+	public void dispose() {
+
+		// Close the music and sound
 		music.dispose();
 		sound.dispose();
 
@@ -237,56 +235,54 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		Vector2 touchPosition = new Vector2(x, y);
-		//Play sound effect
-		
-		
-		
-		
-		//For pinch-to-zoom
+		// Play sound effect
+
+		// For pinch-to-zoom
 		mNumberOfFingers++;
-		if(mNumberOfFingers == 1)
-		{
-		       mFingerOnePointer = pointer;
-		       mFingerOne.set(x, y, 0);
-		       
-		       //Vector2 distanceTravelled = mRenderTree.getMainCharacter().moveToward(new Vector2(x, Gdx.graphics.getHeight()-y));
-		       
-		       
-		       //mCamera.focusOn(x, y /*mRenderTree.getMainCharacter()*/, mTexture, spriteBatch);
-		       //stage.setViewport(x, y, false);
-		       //mCamera.translate(distanceTravelled.x, distanceTravelled.y, 0);
-		       //mCamera.project(new Vector3(distanceTravelled.x, Gdx.graphics.getHeight()- distanceTravelled.y, 0) );
-		       //mCamera.apply)()
-		       GL10 gl = Gdx.graphics.getGL10();
-		       Camera camera = stage.getCamera();
-		       camera.translate(10, 10, 0);
-			   camera.update();
-			   camera.apply(gl);
-			   stage.findActor("mainChar").x += 10f;
-			   stage.findActor("mainChar").y += 10f;
+		if (mNumberOfFingers == 1) {
+			mFingerOnePointer = pointer;
+			mFingerOne.set(x, y, 0);
+
+			// Vector2 distanceTravelled =
+			// mRenderTree.getMainCharacter().moveToward(new Vector2(x,
+			// Gdx.graphics.getHeight()-y));
+
+			// mCamera.focusOn(x, y /*mRenderTree.getMainCharacter()*/,
+			// mTexture, spriteBatch);
+			// stage.setViewport(x, y, false);
+			// mCamera.translate(distanceTravelled.x, distanceTravelled.y, 0);
+			// mCamera.project(new Vector3(distanceTravelled.x,
+			// Gdx.graphics.getHeight()- distanceTravelled.y, 0) );
+			// mCamera.apply)()
+			GL10 gl = Gdx.graphics.getGL10();
+			Camera camera = stage.getCamera();
+			camera.translate(10, 10, 0);
+			camera.update();
+			camera.apply(gl);
+			stage.findActor("mainChar").x += 10f;
+			stage.findActor("mainChar").y += 10f;
+		} else if (mNumberOfFingers == 2) {
+			mFingerTwoPointer = pointer;
+			mFingerTwo.set(x, y, 0);
+
+			float distance = mFingerOne.dst(mFingerTwo);
+			mLastDistance = distance;
+
+			// Play sound because second finger is pressed
+			sound.play();
+
 		}
-		else if(mNumberOfFingers == 2)
-		{
-		       mFingerTwoPointer = pointer;
-		       mFingerTwo.set(x, y, 0);
-		
-		       float distance = mFingerOne.dst(mFingerTwo);
-		       mLastDistance = distance;
-		       
-		       //Play sound because second finger is pressed
-		       sound.play();
-		       
-		 }
-	
+
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
-		Vector3 position = new Vector3(x,y,0);
-		
-		//mCam.unproject(spritePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-		//mCam.position.set(position.x, mCam.position.y = position.y, 10);
+		Vector3 position = new Vector3(x, y, 0);
+
+		// mCam.unproject(spritePosition.set(Gdx.input.getX(), Gdx.input.getY(),
+		// 0));
+		// mCam.position.set(position.x, mCam.position.y = position.y, 10);
 
 		return false;
 	}
@@ -299,29 +295,29 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
-		
-		//For pinch-to-zoom           
-		if(mNumberOfFingers == 1)
-		{
-		       //Vector3 touchPoint = new Vector3(x, y, 0);
-		       //cam.unproject(touchPoint);
-			//mCamera.focusOn(/*mRenderTree.getMainCharacter()*/, mTexture, spriteBatch);
+
+		// For pinch-to-zoom
+		if (mNumberOfFingers == 1) {
+			// Vector3 touchPoint = new Vector3(x, y, 0);
+			// cam.unproject(touchPoint);
+			// mCamera.focusOn(/*mRenderTree.getMainCharacter()*/, mTexture,
+			// spriteBatch);
 		}
 		mNumberOfFingers--;
-		
-		// Remove number of fingers on the screen... clamping number of fingers (ouch! :-)
-		if(mNumberOfFingers < 0){
-		       mNumberOfFingers = 0;
+
+		// Remove number of fingers on the screen... clamping number of fingers
+		// (ouch! :-)
+		if (mNumberOfFingers < 0) {
+			mNumberOfFingers = 0;
 		}
-		
-		
+
 		return false;
 	}
-	
+
 	/*
 	 * Private create
 	 */
-	
+
 	private void create_tiledMap() {
 		final String path = "data/tiledmap/";
 		final String mapname = "foret";
@@ -331,32 +327,35 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 		this.mMap = TiledLoader.createMap(mapHandle);
 
-        this.mAtlas = new TileAtlas(this.mMap, baseDir);
+		this.mAtlas = new TileAtlas(this.mMap, baseDir);
 
-        int blockWidth = 10;
-        int blockHeight = 12;
+		int blockWidth = 10;
+		int blockHeight = 12;
 
-        mTileMapRenderer = new TileMapRenderer(this.mMap, this.mAtlas, blockWidth, blockHeight, 5, 5);
+		mTileMapRenderer = new TileMapRenderer(this.mMap, this.mAtlas,
+				blockWidth, blockHeight, 50, 50);
 
-        for (TiledObjectGroup group : this.mMap.objectGroups) {
-                for (TiledObject object : group.objects) {
-                        // TODO: Draw sprites where objects occur
-                        System.out.println("Object " + object.name + " x,y = " + object.x + "," + object.y + " width,height = "
-                                + object.width + "," + object.height);
-                }
-        }
+		for (TiledObjectGroup group : this.mMap.objectGroups) {
+			for (TiledObject object : group.objects) {
+				// TODO: Draw sprites where objects occur
+				System.out.println("Object " + object.name + " x,y = "
+						+ object.x + "," + object.y + " width,height = "
+						+ object.width + "," + object.height);
+			}
+		}
 
-        //float aspectRatio = (float)Gdx.graphics.getWidth() / (float)Gdx.graphics.getHeight();
-        //mCam = new OrthographicCamera(100f * aspectRatio, 100f);
+		// float aspectRatio = (float)Gdx.graphics.getWidth() /
+		// (float)Gdx.graphics.getHeight();
+		// mCam = new OrthographicCamera(100f * aspectRatio, 100f);
 
-        //mCam.position.set(mTileMapRenderer.getMapWidthUnits() / 2, mTileMapRenderer.getMapHeightUnits() / 2, 0);
-        
-        // camController = new OrthoCamController(cam);
-        // Gdx.input.setInputProcessor(camController);
+		// mCam.position.set(mTileMapRenderer.getMapWidthUnits() / 2,
+		// mTileMapRenderer.getMapHeightUnits() / 2, 0);
 
-        //mMaxCamPosition.set(mTileMapRenderer.getMapWidthUnits(), mTileMapRenderer.getMapHeightUnits());
+		// camController = new OrthoCamController(cam);
+		// Gdx.input.setInputProcessor(camController);
+
+		// mMaxCamPosition.set(mTileMapRenderer.getMapWidthUnits(),
+		// mTileMapRenderer.getMapHeightUnits());
 	}
-	
-	
 
 }
