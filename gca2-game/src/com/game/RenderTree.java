@@ -12,7 +12,10 @@ import com.badlogic.gdx.math.Vector2;
 
 public class RenderTree {
 	Vector<Node> children = new Vector<Node> ();
-	Texture mT = new Texture(Gdx.files.internal("data/badlogic.jpg"));;
+	Texture mT = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+	  
+	Texture mT2 = new Texture(Gdx.files.internal("data/badlogic2.jpg"));
+	
 	BitmapFont mFont = new BitmapFont();
 	int mDebugging = 0;
 	SpriteBatch mSb;
@@ -21,6 +24,7 @@ public class RenderTree {
 		
 	public RenderTree() {
 		mT = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		mT2 = new Texture(Gdx.files.internal("data/badlogic2.jpg"));
 		mFont = new BitmapFont();
 		mFont.setColor(Color.WHITE);
 		mDebugging++;
@@ -36,17 +40,19 @@ public class RenderTree {
 		
 		children.add(new Node(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, mT , nameOfMainCharacterNode, new Vector2(10,10) )) ;
 		
-		//children.add(new Node(100,0, mT ));
-		//children.add(new Node(0,100, mT ));
+		children.add(new Node(100,0, mT , "other", new Vector2(0,0) ));
+		//children.add(new Node(0,900, mT ));
 		//children.add(new Node(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), mT));
 		}
 		public void draw() {
 			mSb.begin();
 			mSb.setColor(Color.WHITE);
 			mSb.end();
-			for (int i = 0; i < children.size(); i++) {
-				children.get(i).draw(0,0);
-			}
+			//for (int i = 0; i < children.size(); i++) {
+			//	children.get(i).draw(0,0);
+			//}
+			children.get(0).draw(0,0);
+			children.get(1).draw(0,0);
 		}
 		
 		public Node getMainCharacter() {
@@ -57,7 +63,7 @@ public class RenderTree {
 			}
 			//should never happen, because mainCharacter should remain in the renderTree
 			Node mainCharacter = new Node(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, mT , nameOfMainCharacterNode, new Vector2(10,10)); 
-			children.add(mainCharacter );
+			children.add(mainCharacter);
 			return mainCharacter;
 		}
 }

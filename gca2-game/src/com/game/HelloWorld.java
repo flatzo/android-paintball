@@ -56,8 +56,8 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
     
 
     // OrthoCamController camController;
-    Vector3 mCamDirection = new Vector3(1, 1, 0);
-    Vector2 mMaxCamPosition = new Vector2(0, 0);
+    //Vector3 mCamDirection = new Vector3(1, 1, 0);
+    //Vector2 mMaxCamPosition = new Vector2(0, 0);
     
 	TileMapRenderer mTileMapRenderer;
     TiledMap mMap;
@@ -69,7 +69,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	Sound sound;
 	
 	//Camera orthographic
-	OrthographicCamera mCam;
+	//OrthographicCamera mCam;
 	CharacterCamera mCamera;
 	//private Rectangle glViewport;
 
@@ -89,6 +89,8 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	float mLastDistance = 0;
 	Vector3 mFingerOne = new Vector3();
 	Vector3 mFingerTwo = new Vector3();
+	
+	 private Rectangle glViewport;
 
 	
 
@@ -113,7 +115,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		music.play();
 		
 		//Define the orthographic cam
-		mCam = new OrthographicCamera(WIDTH,HEIGHT);
+		//mCam = new OrthographicCamera(WIDTH,HEIGHT);
 		mCamera = new CharacterCamera(mRenderTree.getMainCharacter());
 		
 		//after initialization of the renderTree,
@@ -127,27 +129,36 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		//Texture
 		mTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 
-		this.create_tiledMap();
+		glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
+		
+		
+		//this.create_tiledMap();
 
 		
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		//Get the gl version instance
-				GL10 gl = Gdx.graphics.getGL10();
-					
-				//Update the cam
-				mCam.update();
-		        mCam.apply(gl);
+
+		
+		GL10 gl = Gdx.graphics.getGL10();
+		
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		gl.glViewport((int) (glViewport.x+mRenderTree.getMainCharacter().getRelativePosition().x), (int) (glViewport.y+mRenderTree.getMainCharacter().getRelativePosition().y),
+				(int) (glViewport.width+mRenderTree.getMainCharacter().getRelativePosition().x), (int)(glViewport.height+mRenderTree.getMainCharacter().getRelativePosition().y) );
+		
+		mCamera.update();
+		mCamera.apply(gl);
+		mRenderTree.draw();
+		//mTileMapRenderer.render(mCamera/*mCam*/);// , layersList);
 
 		
 		mTileMapRenderer.render(mCam);// , layersList);
 
 		
-		spriteBatch.begin();
+		/*
+		 * spriteBatch.begin();
 		font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 20, 20);
 		font.draw(spriteBatch, "InitialCol, LastCol: " + mTileMapRenderer.getInitialCol() + "," + mTileMapRenderer.getLastCol(), 20,
 			40);
@@ -155,40 +166,41 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 			60);
 
 		tmp.set(0, 0, 0);
-		mCam.unproject(tmp);
+		
+		//mCam.unproject(tmp);
+		mCamera.unproject(tmp);
 		font.draw(spriteBatch, "Location: " + tmp.x + "," + tmp.y, 20, 80);
 		spriteBatch.end();
 		
+		*/
 		
-		/*
-		 * mRenderTree.draw();
-		 */
-		/*
-		int centerX = Gdx.graphics.getWidth() / 2;
-		int centerY = Gdx.graphics.getHeight() / 2;
+		
+		
+		
+		//mCamera.focusOn(mRenderTree.getMainCharacter() );
+		 
+		
+		//int centerX = Gdx.graphics.getWidth() / 2;
+		//int centerY = Gdx.graphics.getHeight() / 2;
 		
 		//Get the gl version instance
-		GL10 gl = Gdx.graphics.getGL10();
-			
-		//Update the cam
-		mCam.update();
-        mCam.apply(gl);
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+		//gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		
 		
         
         // Texturing --------------------- /
-        gl.glActiveTexture(GL10.GL_TEXTURE0);
-        gl.glEnable(GL10.GL_TEXTURE_2D);
-        texture.bind();
+        //gl.glActiveTexture(GL10.GL_TEXTURE0);
+        //gl.glEnable(GL10.GL_TEXTURE_2D);
+        //texture.bind();
 
 
 		// more fun but confusing :)
 		// textPosition.add(textDirection.tmp().mul(Gdx.graphics.getDeltaTime()).mul(60));
-		textPosition.x += textDirection.x * Gdx.graphics.getDeltaTime() * 60;
-		textPosition.y += textDirection.y * Gdx.graphics.getDeltaTime() * 60;
-
+		//textPosition.x += textDirection.x * Gdx.graphics.getDeltaTime() * 60;
+		//textPosition.y += textDirection.y * Gdx.graphics.getDeltaTime() * 60;
+/*
 		if (textPosition.x < 0) {
 			textDirection.x = -textDirection.x;
 			textPosition.x = 0;
@@ -208,6 +220,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 		spriteBatch.begin();
 		spriteBatch.setColor(Color.WHITE);
+		*/
 		/*spriteBatch.draw(texture, centerX - texture.getWidth() / 2, centerY - texture.getHeight() / 2, 0, 0, texture.getWidth(),
 			texture.getHeight());
 		
@@ -296,9 +309,12 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		       mFingerOnePointer = pointer;
 		       mFingerOne.set(x, y, 0);
 		       
-		       mRenderTree.getMainCharacter().moveToward(new Vector2(x, y));
-		       mCamera.focusOn(mRenderTree.getMainCharacter() );
+		       Vector2 distanceTravelled = mRenderTree.getMainCharacter().moveToward(new Vector2(x, Gdx.graphics.getHeight()-y));
 		       
+		       mCamera.focusOn(x, y /*mRenderTree.getMainCharacter()*/, mTexture, spriteBatch);
+		       //mCamera.translate(distanceTravelled.x, distanceTravelled.y, 0);
+		       //mCamera.project(new Vector3(distanceTravelled.x, Gdx.graphics.getHeight()- distanceTravelled.y, 0) );
+		       //mCamera.apply)()
 		}
 		else if(mNumberOfFingers == 2)
 		{
@@ -338,8 +354,9 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		//For pinch-to-zoom           
 		if(mNumberOfFingers == 1)
 		{
-		       Vector3 touchPoint = new Vector3(x, y, 0);
+		       //Vector3 touchPoint = new Vector3(x, y, 0);
 		       //cam.unproject(touchPoint);
+			//mCamera.focusOn(/*mRenderTree.getMainCharacter()*/, mTexture, spriteBatch);
 		}
 		mNumberOfFingers--;
 		
@@ -382,15 +399,15 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
                 }
         }
 
-        float aspectRatio = (float)Gdx.graphics.getWidth() / (float)Gdx.graphics.getHeight();
-        mCam = new OrthographicCamera(100f * aspectRatio, 100f);
+        //float aspectRatio = (float)Gdx.graphics.getWidth() / (float)Gdx.graphics.getHeight();
+        //mCam = new OrthographicCamera(100f * aspectRatio, 100f);
 
-        mCam.position.set(mTileMapRenderer.getMapWidthUnits() / 2, mTileMapRenderer.getMapHeightUnits() / 2, 0);
+        //mCam.position.set(mTileMapRenderer.getMapWidthUnits() / 2, mTileMapRenderer.getMapHeightUnits() / 2, 0);
         
         // camController = new OrthoCamController(cam);
         // Gdx.input.setInputProcessor(camController);
 
-        mMaxCamPosition.set(mTileMapRenderer.getMapWidthUnits(), mTileMapRenderer.getMapHeightUnits());
+        //mMaxCamPosition.set(mTileMapRenderer.getMapWidthUnits(), mTileMapRenderer.getMapHeightUnits());
 	}
 	
 	

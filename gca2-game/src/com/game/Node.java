@@ -47,8 +47,8 @@ public class Node {
 
 	public void draw(int shiftX, int shiftY) {
 		mSb.begin();
-		mSb.draw(texture, relativePosition.x + shiftX, relativePosition.y
-				+ shiftY);
+		mSb.draw(texture, relativePosition.x + shiftX,
+				relativePosition.y + shiftY);
 		mSb.end();
 	}
 
@@ -60,7 +60,7 @@ public class Node {
 		return mName;
 	}
 	
-	void moveToward(Vector2 destination) {
+	Vector2 moveToward(Vector2 destination) {
 		Vector2 distanceToTravel = new Vector2(destination.x - relativePosition.x, destination.y - relativePosition.y);
 
 		
@@ -78,6 +78,10 @@ public class Node {
 		else {
 			relativePosition.y += distanceToTravel.y;
 		}
+		
+		//TODO considers adding obstacle detection
+		
+		return (new Vector2(distanceToTravel.x, distanceToTravel.y));
 	}
 	
 
