@@ -61,9 +61,9 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 	Stage stage;
 	List<Image> images = new ArrayList<Image>();
-    private Texture mTexture;
     
     //Deplacement du mainChar
+	float mcharSpeed = 4.0f;
     int mInputX;
 	int mInputYinverse;
 	int mInputY;
@@ -181,51 +181,16 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 			
 			Vector3 position = new Vector3(mInputX,mInputY,0);
 			Camera camera = stage.getCamera();
-			float deplacementX = (float)(directionPerso.x * 0.25);
-			float deplacementY = (float)(directionPerso.y * 0.25);
+			float deplacementX = (float)(directionPerso.x * mcharSpeed);
+			float deplacementY = (float)(directionPerso.y * mcharSpeed);
 			
-			//Vector3 positionTemporaireActor = stage.findActor("mainChar").x;
-			//if(deplacementX > 2 * 12.75){
-				
-				stage.findActor("mainChar").x += deplacementX;
-				camera.translate(deplacementX,0f,0f);
-			//}
-			//if(deplacementY > 2 * 12.75){
-				
-				stage.findActor("mainChar").y += deplacementY;
-				camera.translate(0f,deplacementY,0f);
-			//}
 			
-			/*
-			if ( Math.abs((mInputX - stage.findActor("mainChar" ).y)) < 2*2.75) {
-				//do nothing
-			}
-			if(mInputX > stage.findActor("mainChar").x){
-				camera.translate(+2.75f,0f,0f);
-				stage.findActor("mainChar").x += 2.75 ;
-				mInputX += 2.75;
-			}
-			else{
-				camera.translate(-2.75f, 0f, 0f);
-				stage.findActor("mainChar").x -= 2.75;
-				mInputX -= 2.75;
-			}
-			
-			if ( Math.abs((mInputY - stage.findActor("mainChar" ).y)) < 2*2.75) {
-				//do nothing
-			}
-			if(mInputY > stage.findActor("mainChar").y){
-				camera.translate(0f,2.75f,0f);
-				stage.findActor("mainChar").y += 2.75;
-				mInputYinverse += 2.75;
-			}
-			else{
-				camera.translate(0f, -2.75f, 0f);
-				stage.findActor("mainChar").y -= 2.75;
-				mInputYinverse -= 2.75;
-			}
-			*/
-			
+			stage.findActor("mainChar").x += deplacementX;
+			camera.translate(deplacementX,0f,0f);
+		
+			stage.findActor("mainChar").y += deplacementY;
+			camera.translate(0f,deplacementY,0f);
+		
 			
 			camera.update();
 			camera.apply(gl);
@@ -317,12 +282,10 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		       mInputX = x;
 		       mInputYinverse = y;
 		       mInputY = Gdx.graphics.getHeight() - mInputYinverse;
-				
-//		       directionPerso = new Vector3(mInputX-(stage.findActor("mainChar").x),
-//											mInputY-(stage.findActor("mainChar").y),0);
-		       
+						       
 		       directionPerso = new Vector3(mInputX-(Gdx.graphics.getWidth()/2),
 		    		   						mInputY-(Gdx.graphics.getHeight()/2),0);
+		       directionPerso.nor();
 		       
 		       //Vector2 distanceTravelled = mRenderTree.getMainCharacter().moveToward(new Vector2(x, Gdx.graphics.getHeight()-y));
 		       
@@ -334,17 +297,24 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		       //mCamera.apply)()
 		       
 		}
+		else if(mNumberOfFingers == 2)
+		{
+			sound.play();
+		}
 
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
-		Vector3 position = new Vector3(x, y, 0);
 
-		// mCam.unproject(spritePosition.set(Gdx.input.getX(), Gdx.input.getY(),
-		// 0));
-		// mCam.position.set(position.x, mCam.position.y = position.y, 10);
+	       mInputX = x;
+	       mInputYinverse = y;
+	       mInputY = Gdx.graphics.getHeight() - mInputYinverse;
+					       
+	       directionPerso = new Vector3(mInputX-(Gdx.graphics.getWidth()/2),
+	    		   						mInputY-(Gdx.graphics.getHeight()/2),0);
+	       directionPerso.nor();
 
 		return false;
 	}
