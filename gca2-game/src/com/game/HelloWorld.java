@@ -54,15 +54,12 @@ import com.badlogic.gdx.math.collision.*;
 
 public class HelloWorld implements ApplicationListener, InputProcessor {
 	
-	
-	SpriteBatch spriteBatch;
 	Texture texture;
 	BitmapFont font;
 	Vector2 textPosition = new Vector2(100, 100);
 	Vector2 textDirection = new Vector2(1, 1);
 	RenderTree mRenderTree;
-
-	Stage stage;
+	
 	List<Image> images = new ArrayList<Image>();
     
     //Deplacement du mainChar
@@ -72,8 +69,6 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	int mInputY;
 	Vector3 directionPerso = new Vector3(0,0,0);
 	boolean isOnThePlayer = false;
-
-	private Texture mTexture;
 
 	// TileMap :)
 	TileMapRenderer mTileMapRenderer;
@@ -85,7 +80,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	Sound sound;
 
 	// Camera
-	CharacterCamera mCamera;
+	OrthographicCamera mCamera;
 
 	// Constants
 	static final int WIDTH = 480;
@@ -102,58 +97,42 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	Vector3 mFingerOne = new Vector3();
 	Vector3 mFingerTwo = new Vector3();
 
-	private Rectangle glViewport;
-
 	// Stage - Actors
 
 	@Override
 	public void create() {
 
 		// Stage pour scene2D
-		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
-				false);
+
 		Texture mT = new Texture(Gdx.files.internal("data/ball.png"));
 		Texture mT2 = new Texture(Gdx.files.internal("data/badlogic.jpg"));
-		Image backGround = new Image("background", mT2);
+		Texture textureProjectile = new Texture(Gdx.files.internal("data/projectile.png"));
+		
+		
 		Image mainChar = new Image("mainChar", mT);
+		Image backGround = new Image("background", mT2);
+		Image projectile = new Image("projectile1", textureProjectile);
+		
 		mainChar.x = Gdx.graphics.getWidth() / 2;
 		mainChar.y = Gdx.graphics.getHeight() / 2;
-		stage.addActor(mainChar);
 
+		mRenderTree = new RenderTree();
+		mRenderTree.getStage().addActor(mainChar);
 		Gdx.input.setInputProcessor(this);
 		font = new BitmapFont();
 		font.setColor(Color.RED);
 
-		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
-		spriteBatch = new SpriteBatch();
 
-		mRenderTree = new RenderTree();
 
 		// Define the audio source
 		music = Gdx.audio.newMusic(Gdx.files.internal("data/music.mp3"));
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/sound.ogg"));
 		music.setLooping(true);
-		music.setVolume(0.2f);
+		music.setVolume(0.0f);
 		music.play();
 
 		// Define the orthographic cam
-		// mCam = new OrthographicCamera(WIDTH,HEIGHT);
-		mCamera = new CharacterCamera(mRenderTree.getMainCharacter());
-
-		// after initialization of the renderTree,
-		// so that position of the mainCharacter
-		// is set.
-
-		// mCam.position.set(mRenderTree.getMainCharacterPosition().x,
-		// mRenderTree.getMainCharacterPosition().y, 10);
-
-		// glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
-
-		// Texture
-		mTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
-
-		// TODO Add support for different screen ratios.
-		glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
+		 mCamera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
 		this.create_tiledMap();
 
@@ -167,34 +146,35 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	@Override
 	public void render() {
 		
-		
-		
 		GL10 gl = Gdx.graphics.getGL10();
 
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		this.mCamera.apply(gl);
-		this.mTileMapRenderer.render((OrthographicCamera) this.stage.getCamera());
+		this.mTileMapRenderer.render((OrthographicCamera) mRenderTree.getStage().getCamera());
 		
 		if(Gdx.input.isTouched()){
 			
 			Vector3 position = new Vector3(mInputX,mInputY,0);
-			Camera camera = stage.getCamera();
+			Camera camera = mRenderTree.getStage().getCamera();
 			float deplacementX = (float)(directionPerso.x * mcharSpeed);
 			float deplacementY = (float)(directionPerso.y * mcharSpeed);
-			
-			
-			stage.findActor("mainChar").x += deplacementX;
+				
+			mRenderTree.getStage().findActor("mainChar").x += deplacementX;
 			camera.translate(deplacementX,0f,0f);
-		
-			stage.findActor("mainChar").y += deplacementY;
+				
+			mRenderTree.getStage().findActor("mainChar").y += deplacementY;
 			camera.translate(0f,deplacementY,0f);
-		
 			
 			camera.update();
 			camera.apply(gl);
 		}
-		stage.draw();
+		
+		
+		//stage.draw();
+		mRenderTree.draw();
+		
+		
 
 		
 	}
@@ -202,8 +182,8 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	@Override
 	public void resize(int width, int height) {
 
-		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
-		textPosition.set(0, 0);
+	//	spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+		//textPosition.set(0, 0);
 
 	}
 
@@ -281,19 +261,18 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		       
 		       //directionPerso.nor();
 		       
-		       //Vector2 distanceTravelled = mRenderTree.getMainCharacter().moveToward(new Vector2(x, Gdx.graphics.getHeight()-y));
-		       
-		       
-		       //mCamera.focusOn(x, y /*mRenderTree.getMainCharacter()*/, mTexture, spriteBatch);
-		       //stage.setViewport(x, y, false);
-		       //mCamera.translate(distanceTravelled.x, distanceTravelled.y, 0);
-		       //mCamera.project(new Vector3(distanceTravelled.x, Gdx.graphics.getHeight()- distanceTravelled.y, 0) );
-		       //mCamera.apply)()
+
 		       
 		}
 		else if(mNumberOfFingers == 2 && pointer == 1 && isOnThePlayer)
 		{
-			sound.play();
+            sound.play();
+			mRenderTree.addProjectile(touchPosition , new Vector3(
+			
+					mRenderTree.getStage().findActor("mainChar").x,
+					mRenderTree.getStage().findActor("mainChar").y,
+					0)
+			);
 		}
 
 		return false;
@@ -326,10 +305,6 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 		// For pinch-to-zoom
 		if (mNumberOfFingers == 1) {
-			// Vector3 touchPoint = new Vector3(x, y, 0);
-			// cam.unproject(touchPoint);
-			// mCamera.focusOn(/*mRenderTree.getMainCharacter()*/, mTexture,
-			// spriteBatch);
 			mInputX = 0;
 			mInputY = 0;
 			mInputYinverse = 0;
@@ -399,7 +374,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	private boolean isOnThePlayer(int x, int y){
 		
 		float fingerX = x, fingerY = Gdx.graphics.getHeight() - y;
-		float playerX = stage.findActor("mainChar").x, playerY = stage.findActor("mainChar").y;
+		float playerX = mRenderTree.getStage().findActor("mainChar").x, playerY = mRenderTree.getStage().findActor("mainChar").y;
 		
 		Sphere sphereFinger = new Sphere(new Vector3(fingerX,fingerY,0),10);
 		Sphere spherePlayer = new Sphere(new Vector3(playerX,playerY,0),10);

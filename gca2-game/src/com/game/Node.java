@@ -1,59 +1,66 @@
 package com.game;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.actors.Image;
+import com.badlogic.gdx.scenes.scene2d.actors.Label;
+import com.badlogic.gdx.scenes.scene2d.actors.Image.*;
 
 public class Node {
 	// sprite
 
 	private String mName = new String();
-	private Texture texture;
-	Vector2 relativePosition = new Vector2();
-	Vector2 mDistancePerRender = new Vector2(0,0);
+	//private Texture texture;
+	Vector3 relativePosition = new Vector3(0,0,0);
+	private Vector2 mDistancePerRender = new Vector2(0,0);
+	Image mImage;
 	
-	SpriteBatch mSb = new SpriteBatch();
+	final int BACK = 0;
+	final int FRONT = 1;
 	
-
-	
-	public Node(int x, int y, Texture textureInput, String nameOfNode, Vector2 distancePerRender) {
-
+	public Node(Vector3 position, String nameOfNode,  Texture texture , Vector2 distancePerRender) {
+		mImage = new Image(nameOfNode, texture);
+		mImage.scaleX= 3f;
+		mImage.scaleY = 3f;
 		mDistancePerRender = distancePerRender; 
 		
 		mName = nameOfNode;
-		texture = textureInput;
-		relativePosition = new Vector2();
-		mSb = new SpriteBatch();
+		relativePosition = position;
+		mImage.x= position.x;
+		mImage.y = position.y;
 
-		if (x >= Gdx.graphics.getWidth()) {
+		/*
+		if (position.x >= Gdx.graphics.getWidth()) {
 			relativePosition.x = Gdx.graphics.getWidth() - 1;
-		} else if (x < 0) {
+		} else if (position.x < 0) {
 			relativePosition.x = 0;
 		} else {
-			relativePosition.x = x;
+			relativePosition.x = position.x;
 		}
 
-		if (y >= Gdx.graphics.getHeight()) {
+		if (position.y >= Gdx.graphics.getHeight()) {
 			relativePosition.y = Gdx.graphics.getHeight() - 1;
-		} else if (y < 0) {
+		} else if (position.y < 0) {
 			relativePosition.y = 0;
 		} else {
-			relativePosition.y = y;
+			relativePosition.y = position.y;
 		}
+		*/
 	}
 
-	public void draw(int shiftX, int shiftY) {
-		mSb.begin();
-		mSb.draw(texture, relativePosition.x + shiftX,
-				relativePosition.y + shiftY);
-		mSb.end();
+	public void update(Stage stage) {
+		
 	}
 
 	public Vector2 getRelativePosition() {
-		return relativePosition;
+		return new Vector2(relativePosition.x, relativePosition.y);
 	}
 
 	public String getName() {
@@ -83,5 +90,16 @@ public class Node {
 		
 		return (new Vector2(distanceToTravel.x, distanceToTravel.y));
 	}
+	
+	public Vector2 getDistancePerRender() {
+		return mDistancePerRender;
+	}
+	public void setDistancePerRender(Vector2 newDistancePerRender) {
+		mDistancePerRender = newDistancePerRender;
+	}
+	public Image getImage() {
+		return mImage;
+	}
+
 
 }

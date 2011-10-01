@@ -1,3 +1,4 @@
+/*
 package com.game;
 import com.game.RenderTree;
 import com.badlogic.gdx.Gdx;
@@ -27,8 +28,8 @@ public class CharacterCamera extends OrthographicCamera {
 
 
 	public void focusOn(int x, int y, Texture mTexture, SpriteBatch spriteBatch) {
-		// TODO Auto-generated method stub
-		//Vector3 tentative1 = new Vector3(/*position.x, position.y*/5,45, 0);
+		//  Auto-generated method stub
+		//Vector3 tentative1 = new Vector3(/*position.x, position.y//5,45, 0);
 		//position.x += 10;
 		//position.y += 10;
 		//Vector3 tentative2 = new Vector3(tentative1);
@@ -53,3 +54,4 @@ public class CharacterCamera extends OrthographicCamera {
 	}
 	
 }
+*/
