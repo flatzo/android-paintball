@@ -18,6 +18,7 @@ package com.game;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -28,6 +29,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.tiled.TileAtlas;
+import com.badlogic.gdx.graphics.g2d.tiled.TileMapRenderer;
+import com.badlogic.gdx.graphics.g2d.tiled.TiledLoader;
+import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
+import com.badlogic.gdx.graphics.g2d.tiled.TiledObject;
+import com.badlogic.gdx.graphics.g2d.tiled.TiledObjectGroup;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -44,6 +51,15 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
     private Texture mTexture;
 
 	
+    // OrthoCamController camController;
+    Vector3 mCamDirection = new Vector3(1, 1, 0);
+    Vector2 mMaxCamPosition = new Vector2(0, 0);
+    
+	TileMapRenderer mTileMapRenderer;
+    TiledMap mMap;
+    TileAtlas mAtlas;
+    
+	
 	//Audio
 	Music music;
 	Sound sound;
@@ -58,6 +74,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	final Vector3 curr = new Vector3();
 	final Vector3 last = new Vector3(-1, -1, -1);
 	final Vector3 delta = new Vector3();
+	Vector3 tmp = new Vector3();
 	
 	// for pinch-to-zoom
 	int mNumberOfFingers = 0;
@@ -74,6 +91,9 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		Gdx.input.setInputProcessor(this);
 		font = new BitmapFont();
 		font.setColor(Color.RED);
+		
+		
+		
 		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 		spriteBatch = new SpriteBatch();
 		
@@ -95,14 +115,35 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		//Texture
 		mTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 
-
+		this.create_tiledMap();
 
 		
 	}
 
 	@Override
 	public void render () {
-		mRenderTree.draw();
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+
+		mTileMapRenderer.render(mCam);// , layersList);
+
+		
+		spriteBatch.begin();
+		font.draw(spriteBatch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 20, 20);
+		font.draw(spriteBatch, "InitialCol, LastCol: " + mTileMapRenderer.getInitialCol() + "," + mTileMapRenderer.getLastCol(), 20,
+			40);
+		font.draw(spriteBatch, "InitialRow, LastRow: " + mTileMapRenderer.getInitialRow() + "," + mTileMapRenderer.getLastRow(), 20,
+			60);
+
+		tmp.set(0, 0, 0);
+		mCam.unproject(tmp);
+		font.draw(spriteBatch, "Location: " + tmp.x + "," + tmp.y, 20, 80);
+		spriteBatch.end();
+		
+		
+		/*
+		 * mRenderTree.draw();
+		 */
 		/*
 		int centerX = Gdx.graphics.getWidth() / 2;
 		int centerY = Gdx.graphics.getHeight() / 2;
@@ -280,6 +321,45 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		last.set(-1, -1, -1);
 		
 		return false;
+	}
+	
+	/*
+	 * Private create
+	 */
+	
+	private void create_tiledMap() {
+		final String path = "data/tiledmap/";
+        final String mapname = "tilemap csv";
+        
+        FileHandle mapHandle = Gdx.files.internal(path + mapname + ".tmx");
+        FileHandle baseDir = Gdx.files.internal(path);
+        
+        this.mMap = TiledLoader.createMap(mapHandle);
+
+        this.mAtlas = new TileAtlas(this.mMap, baseDir);
+
+        int blockWidth = 10;
+        int blockHeight = 12;
+
+        mTileMapRenderer = new TileMapRenderer(this.mMap, this.mAtlas, blockWidth, blockHeight, 5, 5);
+
+        for (TiledObjectGroup group : this.mMap.objectGroups) {
+                for (TiledObject object : group.objects) {
+                        // TODO: Draw sprites where objects occur
+                        System.out.println("Object " + object.name + " x,y = " + object.x + "," + object.y + " width,height = "
+                                + object.width + "," + object.height);
+                }
+        }
+
+        float aspectRatio = (float)Gdx.graphics.getWidth() / (float)Gdx.graphics.getHeight();
+        mCam = new OrthographicCamera(100f * aspectRatio, 100f);
+
+        mCam.position.set(mTileMapRenderer.getMapWidthUnits() / 2, mTileMapRenderer.getMapHeightUnits() / 2, 0);
+        
+        // camController = new OrthoCamController(cam);
+        // Gdx.input.setInputProcessor(camController);
+
+        mMaxCamPosition.set(mTileMapRenderer.getMapWidthUnits(), mTileMapRenderer.getMapHeightUnits());
 	}
 	
 	

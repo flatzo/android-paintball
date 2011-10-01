@@ -1,0 +1,50 @@
+
+tiledmap1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+perspective
+  rotate: false
+  xy: 2, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+sewer
+  rotate: false
+  xy: 260, 2
+  size: 192, 217
+  orig: 192, 217
+  offset: 0, 0
+  index: -1
+tmw
+  rotate: false
+  xy: 2, 260
+  size: 265, 199
+  orig: 265, 199
+  offset: 0, 0
+  index: -1
+
+tiledmap2.png
+format: Alpha
+filter: Nearest,Nearest
+repeat: none
+isometric
+  rotate: false
+  xy: 2, 2
+  size: 256, 384
+  orig: 256, 384
+  offset: 0, 0
+  index: -1
+
+sewer_automap1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+rules
+  rotate: false
+  xy: 2, 2
+  size: 72, 48
+  orig: 72, 48
+  offset: 0, 0
+  index: -1
