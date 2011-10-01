@@ -16,9 +16,12 @@
 
 package com.game;
 
+import android.content.pm.ActivityInfo;
+
 import com.game.*;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Orientation;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
@@ -50,8 +53,8 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	
 
     private Texture mTexture;
+    
 
-	
     // OrthoCamController camController;
     Vector3 mCamDirection = new Vector3(1, 1, 0);
     Vector2 mMaxCamPosition = new Vector2(0, 0);
@@ -77,6 +80,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	final Vector3 last = new Vector3(-1, -1, -1);
 	final Vector3 delta = new Vector3();
 	Vector3 tmp = new Vector3();
+	Vector3 spritePosition = new Vector3();
 	
 	// for pinch-to-zoom
 	int mNumberOfFingers = 0;
@@ -131,8 +135,15 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	@Override
 	public void render () {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		//Get the gl version instance
+				GL10 gl = Gdx.graphics.getGL10();
+					
+				//Update the cam
+				mCam.update();
+		        mCam.apply(gl);
 
-
+		
 		mTileMapRenderer.render(mCam);// , layersList);
 
 		
@@ -209,8 +220,10 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 	@Override
 	public void resize (int width, int height) {
-		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
-		textPosition.set(0, 0);
+		
+		//	spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+			textPosition.set(0, 0);
+		
 	}
 
 	@Override
@@ -305,7 +318,11 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
+		Vector3 position = new Vector3(x,y,0);
 		
+		//mCam.unproject(spritePosition.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+		//mCam.position.set(position.x, mCam.position.y = position.y, 10);
+
 		return false;
 	}
 
