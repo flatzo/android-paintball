@@ -50,6 +50,8 @@ import com.badlogic.gdx.scenes.scene2d.actors.Image;
 import com.badlogic.gdx.scenes.scene2d.actors.Label;
 
 public class HelloWorld implements ApplicationListener, InputProcessor {
+	
+	
 	SpriteBatch spriteBatch;
 	Texture texture;
 	BitmapFont font;
@@ -59,6 +61,13 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 	Stage stage;
 	List<Image> images = new ArrayList<Image>();
+    private Texture mTexture;
+    
+    //Deplacement du mainChar
+    int mInputX;
+	int mInputYinverse;
+	int mInputY;
+	Vector3 directionPerso = new Vector3(0,0,0);
 
 	private Texture mTexture;
 
@@ -107,8 +116,8 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		mainChar.y = Gdx.graphics.getHeight() / 2;
 		backGround.x = Gdx.graphics.getWidth() / 2;
 		backGround.y = Gdx.graphics.getHeight() / 2;
-		backGround.scaleX = 3f;
-		backGround.scaleY = 3f;
+		backGround.scaleX = 5f;
+		backGround.scaleY = 5f;
 		stage.addActor(backGround);
 		stage.addActor(mainChar);
 
@@ -158,15 +167,73 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 	@Override
 	public void render() {
+		
+		
+		
 		GL10 gl = Gdx.graphics.getGL10();
 
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		this.mCamera.apply(gl);
-		this.mTileMapRenderer.render(this.mCamera);
+		//this.mTileMapRenderer.render(this.mCamera);
+		
+		if(Gdx.input.isTouched()){
+			
+			Vector3 position = new Vector3(mInputX,mInputY,0);
+			Camera camera = stage.getCamera();
+			float deplacementX = (float)(directionPerso.x * 0.25);
+			float deplacementY = (float)(directionPerso.y * 0.25);
+			
+			//Vector3 positionTemporaireActor = stage.findActor("mainChar").x;
+			//if(deplacementX > 2 * 12.75){
+				
+				stage.findActor("mainChar").x += deplacementX;
+				camera.translate(deplacementX,0f,0f);
+			//}
+			//if(deplacementY > 2 * 12.75){
+				
+				stage.findActor("mainChar").y += deplacementY;
+				camera.translate(0f,deplacementY,0f);
+			//}
+			
+			/*
+			if ( Math.abs((mInputX - stage.findActor("mainChar" ).y)) < 2*2.75) {
+				//do nothing
+			}
+			if(mInputX > stage.findActor("mainChar").x){
+				camera.translate(+2.75f,0f,0f);
+				stage.findActor("mainChar").x += 2.75 ;
+				mInputX += 2.75;
+			}
+			else{
+				camera.translate(-2.75f, 0f, 0f);
+				stage.findActor("mainChar").x -= 2.75;
+				mInputX -= 2.75;
+			}
+			
+			if ( Math.abs((mInputY - stage.findActor("mainChar" ).y)) < 2*2.75) {
+				//do nothing
+			}
+			if(mInputY > stage.findActor("mainChar").y){
+				camera.translate(0f,2.75f,0f);
+				stage.findActor("mainChar").y += 2.75;
+				mInputYinverse += 2.75;
+			}
+			else{
+				camera.translate(0f, -2.75f, 0f);
+				stage.findActor("mainChar").y -= 2.75;
+				mInputYinverse -= 2.75;
+			}
+			*/
+			
+			
+			camera.update();
+			camera.apply(gl);
+		}
+		stage.draw();
+		//mTileMapRenderer.render(mCamera/*mCam*/);// , layersList);
 
-		// stage.draw();
-
+		
 	}
 
 	@Override
@@ -235,42 +302,37 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		Vector2 touchPosition = new Vector2(x, y);
-		// Play sound effect
 
-		// For pinch-to-zoom
+		
+		
+		
+		
+		//For pinch-to-zoom
 		mNumberOfFingers++;
-		if (mNumberOfFingers == 1) {
-			mFingerOnePointer = pointer;
-			mFingerOne.set(x, y, 0);
-
-			// Vector2 distanceTravelled =
-			// mRenderTree.getMainCharacter().moveToward(new Vector2(x,
-			// Gdx.graphics.getHeight()-y));
-
-			// mCamera.focusOn(x, y /*mRenderTree.getMainCharacter()*/,
-			// mTexture, spriteBatch);
-			// stage.setViewport(x, y, false);
-			// mCamera.translate(distanceTravelled.x, distanceTravelled.y, 0);
-			// mCamera.project(new Vector3(distanceTravelled.x,
-			// Gdx.graphics.getHeight()- distanceTravelled.y, 0) );
-			// mCamera.apply)()
-			GL10 gl = Gdx.graphics.getGL10();
-			Camera camera = stage.getCamera();
-			camera.translate(10, 10, 0);
-			camera.update();
-			camera.apply(gl);
-			stage.findActor("mainChar").x += 10f;
-			stage.findActor("mainChar").y += 10f;
-		} else if (mNumberOfFingers == 2) {
-			mFingerTwoPointer = pointer;
-			mFingerTwo.set(x, y, 0);
-
-			float distance = mFingerOne.dst(mFingerTwo);
-			mLastDistance = distance;
-
-			// Play sound because second finger is pressed
-			sound.play();
-
+		if(mNumberOfFingers == 1)
+		{
+		       mFingerOnePointer = pointer;
+		       mFingerOne.set(x, y, 0);
+		       
+		       mInputX = x;
+		       mInputYinverse = y;
+		       mInputY = Gdx.graphics.getHeight() - mInputYinverse;
+				
+//		       directionPerso = new Vector3(mInputX-(stage.findActor("mainChar").x),
+//											mInputY-(stage.findActor("mainChar").y),0);
+		       
+		       directionPerso = new Vector3(mInputX-(Gdx.graphics.getWidth()/2),
+		    		   						mInputY-(Gdx.graphics.getHeight()/2),0);
+		       
+		       //Vector2 distanceTravelled = mRenderTree.getMainCharacter().moveToward(new Vector2(x, Gdx.graphics.getHeight()-y));
+		       
+		       
+		       //mCamera.focusOn(x, y /*mRenderTree.getMainCharacter()*/, mTexture, spriteBatch);
+		       //stage.setViewport(x, y, false);
+		       //mCamera.translate(distanceTravelled.x, distanceTravelled.y, 0);
+		       //mCamera.project(new Vector3(distanceTravelled.x, Gdx.graphics.getHeight()- distanceTravelled.y, 0) );
+		       //mCamera.apply)()
+		       
 		}
 
 		return false;
@@ -302,6 +364,10 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 			// cam.unproject(touchPoint);
 			// mCamera.focusOn(/*mRenderTree.getMainCharacter()*/, mTexture,
 			// spriteBatch);
+			mInputX = 0;
+			mInputY = 0;
+			mInputYinverse = 0;
+			directionPerso = new Vector3(0,0,0);
 		}
 		mNumberOfFingers--;
 
