@@ -156,6 +156,9 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		mTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 
 		glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
+
+		
+		//this.create_tiledMap();
 		
 		
 		//this.create_tiledMap();
@@ -260,11 +263,11 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	}
 
 	@Override
-	public void resize (int width, int height) {
-		
-			spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
-			textPosition.set(0, 0);
-		
+	public void resize(int width, int height) {
+
+		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+		textPosition.set(0, 0);
+
 	}
 
 	@Override
@@ -412,12 +415,12 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	
 	private void create_tiledMap() {
 		final String path = "data/tiledmap/";
-        final String mapname = "tilemap csv";
-        
-        FileHandle mapHandle = Gdx.files.internal(path + mapname + ".tmx");
-        FileHandle baseDir = Gdx.files.internal(path);
-        
-        this.mMap = TiledLoader.createMap(mapHandle);
+		final String mapname = "foret";
+
+		FileHandle mapHandle = Gdx.files.internal(path + mapname + ".tmx");
+		FileHandle baseDir = Gdx.files.internal(path);
+
+		this.mMap = TiledLoader.createMap(mapHandle);
 
         this.mAtlas = new TileAtlas(this.mMap, baseDir);
 

@@ -19,6 +19,7 @@ public class RenderTree {
 	BitmapFont mFont = new BitmapFont();
 	int mDebugging = 0;
 	SpriteBatch mSb;
+	private Texture mT2;
 	
 	static final String nameOfMainCharacterNode= "MainCharacter";
 		
@@ -40,7 +41,7 @@ public class RenderTree {
 		
 		children.add(new Node(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, mT , nameOfMainCharacterNode, new Vector2(10,10) )) ;
 		
-		children.add(new Node(300,10, mT2 , "other", new Vector2(0,0) ));
+		//children.add(new Node(300,10, mT2 , "other", new Vector2(0,0) ));
 		//children.add(new Node(0,900, mT ));
 		//children.add(new Node(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), mT));
 		}
