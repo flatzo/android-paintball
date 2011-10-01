@@ -48,6 +48,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actors.Image;
 import com.badlogic.gdx.scenes.scene2d.actors.Label;
+import com.badlogic.gdx.math.collision.Sphere;
+import com.badlogic.gdx.math.collision.*;
+
 
 public class HelloWorld implements ApplicationListener, InputProcessor {
 	
@@ -68,6 +71,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	int mInputYinverse;
 	int mInputY;
 	Vector3 directionPerso = new Vector3(0,0,0);
+	boolean isOnThePlayer = false;
 
 	private Texture mTexture;
 
@@ -272,9 +276,12 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		
 		
 		
-		//For pinch-to-zoom
+		//Increment the number of fingers
 		mNumberOfFingers++;
-		if(mNumberOfFingers == 1)
+		
+		
+		//Verify the number of finger and the pointer 
+		if(mNumberOfFingers == 1 && pointer == 0 && isOnThePlayer(x,y))
 		{
 		       mFingerOnePointer = pointer;
 		       mFingerOne.set(x, y, 0);
@@ -297,7 +304,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		       //mCamera.apply)()
 		       
 		}
-		else if(mNumberOfFingers == 2)
+		else if(mNumberOfFingers == 2 && pointer == 1 && isOnThePlayer)
 		{
 			sound.play();
 		}
@@ -308,6 +315,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
 
+		if(pointer != 1 && isOnThePlayer){
 	       mInputX = x;
 	       mInputYinverse = y;
 	       mInputY = Gdx.graphics.getHeight() - mInputYinverse;
@@ -315,6 +323,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	       directionPerso = new Vector3(mInputX-(Gdx.graphics.getWidth()/2),
 	    		   						mInputY-(Gdx.graphics.getHeight()/2),0);
 	       directionPerso.nor();
+		}
 
 		return false;
 	}
@@ -340,7 +349,9 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 			directionPerso = new Vector3(0,0,0);
 		}
 		mNumberOfFingers--;
-
+		
+		if(mNumberOfFingers == 0)
+			isOnThePlayer = false;
 		// Remove number of fingers on the screen... clamping number of fingers
 		// (ouch! :-)
 		if (mNumberOfFingers < 0) {
@@ -392,6 +403,29 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 		// mMaxCamPosition.set(mTileMapRenderer.getMapWidthUnits(),
 		// mTileMapRenderer.getMapHeightUnits());
+	}
+	
+	/*
+	 * Verify if the the finger is on the player
+	 *
+	 */
+	private boolean isOnThePlayer(int x, int y){
+		
+		float fingerX = x, fingerY = Gdx.graphics.getHeight() - y;
+		float playerX = stage.findActor("mainChar").x, playerY = stage.findActor("mainChar").y;
+		
+		Sphere sphereFinger = new Sphere(new Vector3(fingerX,fingerY,0),10);
+		Sphere spherePlayer = new Sphere(new Vector3(playerX,playerY,0),10);
+		if(sphereFinger.overlaps(spherePlayer)){
+			isOnThePlayer = true;
+			return true;
+		}
+		else{
+			isOnThePlayer = true;
+			return true;
+		}
+			
+			
 	}
 
 }
