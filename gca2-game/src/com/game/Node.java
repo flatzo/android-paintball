@@ -83,6 +83,5 @@ public class Node {
 		
 		return (new Vector2(distanceToTravel.x, distanceToTravel.y));
 	}
-	
 
 }

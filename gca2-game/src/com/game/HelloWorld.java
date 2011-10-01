@@ -154,7 +154,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		//mTileMapRenderer.render(mCamera/*mCam*/);// , layersList);
 
 		
-		mTileMapRenderer.render(mCam);// , layersList);
+		//mTileMapRenderer.render(mCam);// , layersList);
 
 		
 		/*
@@ -234,7 +234,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	@Override
 	public void resize (int width, int height) {
 		
-		//	spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+			spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
 			textPosition.set(0, 0);
 		
 	}

@@ -14,7 +14,7 @@ public class RenderTree {
 	Vector<Node> children = new Vector<Node> ();
 	Texture mT = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 	  
-	Texture mT2 = new Texture(Gdx.files.internal("data/badlogic2.jpg"));
+	//Texture mT2 = new Texture(Gdx.files.internal("data/badlogic2.jpg"));
 	
 	BitmapFont mFont = new BitmapFont();
 	int mDebugging = 0;
@@ -24,7 +24,7 @@ public class RenderTree {
 		
 	public RenderTree() {
 		mT = new Texture(Gdx.files.internal("data/badlogic.jpg"));
-		mT2 = new Texture(Gdx.files.internal("data/badlogic2.jpg"));
+		//mT2 = new Texture(Gdx.files.internal("data/badlogic2.jpg"));
 		mFont = new BitmapFont();
 		mFont.setColor(Color.WHITE);
 		mDebugging++;
@@ -48,11 +48,11 @@ public class RenderTree {
 			mSb.begin();
 			mSb.setColor(Color.WHITE);
 			mSb.end();
-			//for (int i = 0; i < children.size(); i++) {
-			//	children.get(i).draw(0,0);
-			//}
-			children.get(0).draw(0,0);
-			children.get(1).draw(0,0);
+			for (int i = 0; i < children.size(); i++) {
+				children.get(i).draw(0,0);
+			}
+			//children.get(0).draw(0,0);
+			//children.get(1).draw(0,0);
 		}
 		
 		public Node getMainCharacter() {
