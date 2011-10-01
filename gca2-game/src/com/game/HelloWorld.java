@@ -33,6 +33,7 @@ public class HelloWorld implements ApplicationListener {
 	BitmapFont font;
 	Vector2 textPosition = new Vector2(100, 100);
 	Vector2 textDirection = new Vector2(1, 1);
+	RenderTree mRenderTree;
 	
 	//Audio
 	Music music;
@@ -45,6 +46,8 @@ public class HelloWorld implements ApplicationListener {
 		texture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 		spriteBatch = new SpriteBatch();
 		
+		mRenderTree = new RenderTree();
+		
 		//Define the audio source
 		music = Gdx.audio.newMusic(Gdx.files.internal("data/music.mp3"));
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/sound.ogg"));
@@ -55,6 +58,8 @@ public class HelloWorld implements ApplicationListener {
 
 	@Override
 	public void render () {
+		mRenderTree.draw();
+		/*
 		int centerX = Gdx.graphics.getWidth() / 2;
 		int centerY = Gdx.graphics.getHeight() / 2;
 		
@@ -93,6 +98,7 @@ public class HelloWorld implements ApplicationListener {
 			texture.getHeight());
 		font.draw(spriteBatch, "Hello World!", (int)textPosition.x, (int)textPosition.y);
 		spriteBatch.end();
+		*/
 	}
 
 	@Override
@@ -112,6 +118,7 @@ public class HelloWorld implements ApplicationListener {
 
 	@Override
 	public void resume () {
+		create();
 		
 		//Play music and sound
 		music.play();
