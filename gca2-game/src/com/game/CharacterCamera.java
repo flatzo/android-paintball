@@ -28,9 +28,9 @@ public class CharacterCamera extends OrthographicCamera {
 
 	public void focusOn(int x, int y, Texture mTexture, SpriteBatch spriteBatch) {
 		// TODO Auto-generated method stub
-		Vector3 tentative1 = new Vector3(/*position.x, position.y*/5,45, 0);
-		position.x += 10;
-		position.y += 10;
+		//Vector3 tentative1 = new Vector3(/*position.x, position.y*/5,45, 0);
+		//position.x += 10;
+		//position.y += 10;
 		//Vector3 tentative2 = new Vector3(tentative1);
 //		this.project( tentative1);
 //		if ( tentative1.x == tentative2.x &&
@@ -43,7 +43,7 @@ public class CharacterCamera extends OrthographicCamera {
 //			spriteBatch.end();
 //		}
 		
-		this.translate(35, 35,0);
+		//this.translate(35, 35,0);
 		
 		
 		//?

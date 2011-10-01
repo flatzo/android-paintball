@@ -40,7 +40,7 @@ public class RenderTree {
 		
 		children.add(new Node(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, mT , nameOfMainCharacterNode, new Vector2(10,10) )) ;
 		
-		children.add(new Node(100,0, mT , "other", new Vector2(0,0) ));
+		children.add(new Node(300,10, mT2 , "other", new Vector2(0,0) ));
 		//children.add(new Node(0,900, mT ));
 		//children.add(new Node(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), mT));
 		}
