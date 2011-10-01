@@ -3,7 +3,6 @@ package com.game;
 import java.util.List;
 import java.util.Vector;
 import java.util.List.*;
-import com.game.utils.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
