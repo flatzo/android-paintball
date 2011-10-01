@@ -174,7 +174,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		this.mCamera.apply(gl);
-		//this.mTileMapRenderer.render(this.mCamera);
+		this.mTileMapRenderer.render((OrthographicCamera) this.stage.getCamera());
 		
 		if(Gdx.input.isTouched()){
 			
@@ -195,7 +195,6 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 			camera.apply(gl);
 		}
 		stage.draw();
-		//mTileMapRenderer.render(mCamera/*mCam*/);// , layersList);
 
 		
 	}
