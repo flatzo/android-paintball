@@ -118,11 +118,6 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		Image mainChar = new Image("mainChar", mT);
 		mainChar.x = Gdx.graphics.getWidth() / 2;
 		mainChar.y = Gdx.graphics.getHeight() / 2;
-		backGround.x = Gdx.graphics.getWidth() / 2;
-		backGround.y = Gdx.graphics.getHeight() / 2;
-		backGround.scaleX = 5f;
-		backGround.scaleY = 5f;
-		stage.addActor(backGround);
 		stage.addActor(mainChar);
 
 		Gdx.input.setInputProcessor(this);
