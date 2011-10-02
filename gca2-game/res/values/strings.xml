@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Paintball Ourscureil</string><string name="btn_start">Play the game</string>
-    <string name="lblmoving">How to move around</string>
-    <string name="txtmoving">Click on your character and drag toward the direction your want to move to</string>
-    <string name="lblshooting">Hot to shoot at ennemies</string>
-    <string name="txtshooting">Your juste have to touch the screen, without dragging. The direction is specified by where you are clicking. You can even shoot while running !</string>
+    <string name="lblmoving">Moving Around</string>
+    <string name="txtmoving">Drag your character, starting from the middle of the screen, towards the direction where you want</string>
+    <string name="lblshooting">Shooting</string>
+    <string name="txtshooting">Touch your screen at any position, except the middle. You can also shoot while moving with another finger.</string>
     <string name="btn_instructions">Instructions</string>
-    <string name="title">GCA2-GAME Team Ourscureil</string>
+    <string name="title">GCA2-PaintBall-Team Ourscureil</string>
 </resources>

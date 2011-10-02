@@ -19,15 +19,12 @@ public class RenderTree {
 	ArrayList<Node> children = new ArrayList<Node> ();
 	static Stage mStage;
 	
-	Texture mainCharacterTx = null;
-	
 	static final String nameOfMainCharacterNode= "MainChar";
 	
 	private final int maximumNumberOfMonster = 30;
 	private int numberOfMonster = 0;
 		
 	public RenderTree() {
-		mainCharacterTx = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 		mStage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
 				false);
 		numberOfMonster = 0;

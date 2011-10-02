@@ -431,11 +431,11 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 		this.mAtlas = new TileAtlas(this.mMap, baseDir);
 
-		int blockWidth = 10;
-		int blockHeight = 12;
+		int blockWidth = 128;
+		int blockHeight = 128;
 
 		mTileMapRenderer = new TileMapRenderer(this.mMap, this.mAtlas,
-				blockWidth, blockHeight, 60, 60);
+				blockWidth, blockHeight, 128, 128);
 
 		for (TiledObjectGroup group : this.mMap.objectGroups) {
 			for (TiledObject object : group.objects) {
