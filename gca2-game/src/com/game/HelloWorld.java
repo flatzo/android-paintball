@@ -317,8 +317,17 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 				);
 			sound.play();
 				//underFinger
-			
-			if (y >= HEIGHT/2) {
+					
+				//mRenderTree.addProjectile(positionDoigtUnderFinger, cameraPositionUnderFinger)
+					
+		}
+		//Verify the number of finger and the pointer 
+		if(mNumberOfFingers == 1 && pointer == 0 && isOnThePlayer(x,y))
+		{
+		       mFingerOnePointer = pointer;
+		       mFingerOne.set(x, y, 0);
+		       
+		    if (y >= HEIGHT/2) {
 					if(Math.abs(x-WIDTH/2)<WIDTH/3)
 						mSpriteN = 0;
 					else if(x<WIDTH/2)
@@ -334,16 +343,6 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		    	  	else
 		    	  		mSpriteN = 6;
 		    }
-				
-				//mRenderTree.addProjectile(positionDoigtUnderFinger, cameraPositionUnderFinger)
-					
-		}
-		//Verify the number of finger and the pointer 
-		if(mNumberOfFingers == 1 && pointer == 0 && isOnThePlayer(x,y))
-		{
-		       mFingerOnePointer = pointer;
-		       mFingerOne.set(x, y, 0);
-		       
 		       
 		       //directionPerso.nor();
 		       
@@ -484,8 +483,8 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		float fingerX = x, fingerY = Gdx.graphics.getHeight() - y;
 		float playerX = Gdx.graphics.getWidth()/2, playerY = Gdx.graphics.getHeight()/2;
 		
-		Sphere sphereFinger = new Sphere(new Vector3(fingerX,fingerY,0),20);
-		Sphere spherePlayer = new Sphere(new Vector3(playerX,playerY,0),20);
+		Sphere sphereFinger = new Sphere(new Vector3(fingerX,fingerY,0),40);
+		Sphere spherePlayer = new Sphere(new Vector3(playerX,playerY,0),40);
 		if(sphereFinger.overlaps(spherePlayer)){
 			isOnThePlayer = true;
 			return true;
