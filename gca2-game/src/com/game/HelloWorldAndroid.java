@@ -37,6 +37,9 @@ public class HelloWorldAndroid extends AndroidApplication {
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		setContentView(R.layout.main);
+		
 		initialize(new HelloWorld(), false);
 	}
 }

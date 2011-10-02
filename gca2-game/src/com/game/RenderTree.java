@@ -56,7 +56,6 @@ public class RenderTree {
 				mStage.addActor(mainChar);
 			}
 			
-		
 		}
 		
 		public Stage getStage() {

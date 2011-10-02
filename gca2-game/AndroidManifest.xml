@@ -4,14 +4,20 @@
       android:versionCode="1"
       android:versionName="1.0">
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:label="@string/app_name"
-                  android:configChanges="keyboard|keyboardHidden|orientation" android:name="HelloWorldAndroid"
-                   android:screenOrientation="landscape">
-            <intent-filter>
+        <activity android:enabled="true" android:name="SplashScreen" android:screenOrientation="landscape">
+         <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity android:label="@string/app_name"
+                  android:configChanges="keyboard|keyboardHidden|orientation" android:name="HelloWorldAndroid"
+                   android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+           
+        </activity>
+        
+        <activity android:name="Instructions" android:screenOrientation="landscape"></activity>
 
     </application>
     <uses-sdk android:minSdkVersion="3" />

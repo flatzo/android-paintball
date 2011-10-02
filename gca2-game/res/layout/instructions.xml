@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <TextView android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:id="@+id/lbl_moving" android:text="@string/lblmoving"></TextView>
+    <TextView android:layout_width="wrap_content" android:id="@+id/txt_moving" android:layout_height="wrap_content" android:text="@string/txtmoving"></TextView>
+    <TextView android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:id="@+id/lbl_shooting" android:text="@string/lblshooting"></TextView>
+    <TextView android:layout_width="wrap_content" android:id="@+id/txt_shooting" android:layout_height="wrap_content" android:text="@string/txtshooting"></TextView>
+    
+</LinearLayout>
