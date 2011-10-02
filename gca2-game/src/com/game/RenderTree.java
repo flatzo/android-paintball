@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class RenderTree {
 	Vector<Node> children = new Vector<Node> ();
-	Stage mStage;
+	static Stage mStage;
 	
 	Texture mainCharacterTx = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 	
@@ -33,7 +33,6 @@ public class RenderTree {
 		}
 	
 	public void addProjectile( Vector2 positionDoigt, Vector2 positionJoueur) {
-		
 		//Vector2 beginningPosition = new Vector2(positionJoueur.x, positionJoueur.y);// mStage.findActor("mainChar").x, mStage.findActor("mainChar").y);
 		Vector2 distanceAParcourir = new Vector2 (
 				(  (positionDoigt.x - Gdx.graphics.getWidth()/2) ),
@@ -83,5 +82,9 @@ public class RenderTree {
 //		}
 		public Stage getStage() {
 			return mStage;
+		}
+		
+		public static void removeSplash() {
+			mStage.removeActor(mStage.findActor(BallSplash.getInstance().name));
 		}
 }

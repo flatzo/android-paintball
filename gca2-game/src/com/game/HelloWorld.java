@@ -111,7 +111,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 		// Stage pour scene2D
 		mT = new Texture (Gdx.files.internal("data/ball.png"));
-		texture = new Texture(Gdx.files.internal("data/main_char.png"));
+		texture = new Texture(Gdx.files.internal("data/mainchar.png"));
         mMainCharBatch = new SpriteBatch();
         mMainCharRegions[0] = new TextureRegion(texture, 0, 	0, 		0.25f, 	0.25f);
         mMainCharRegions[1] = new TextureRegion(texture, 0.25f, 0, 		0.5f, 	0.25f);
@@ -130,6 +130,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		
 		
 		Image mainChar = new Image("mainChar", mT);
+
 		//Image backGround = new Image("background", mT2);
 		Image projectile = new Image("projectile1", textureProjectile);
 		
@@ -138,6 +139,10 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 		mRenderTree = new RenderTree();
 		mRenderTree.getStage().addActor(mainChar);
+		
+		mRenderTree.getStage().addActor(BallSplash.getInstance());
+		
+		
 		Gdx.input.setInputProcessor(this);
 		font = new BitmapFont();
 		font.setColor(Color.RED);
@@ -169,7 +174,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		GL10 gl = Gdx.graphics.getGL10();
 
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
+		
 		this.mCamera.apply(gl);
 		this.mTileMapRenderer.render((OrthographicCamera) mRenderTree.getStage().getCamera());
 		
@@ -212,7 +217,6 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 			camera.update();
 			camera.apply(gl);
 		}
-		
 		
 		//stage.draw();
 		mRenderTree.draw();
@@ -290,7 +294,8 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		Vector2 touchPosition = new Vector2(x, y);
-
+		
+		BallSplash.getInstance().splashIt(new Vector2(this.mCamera.position.x,this.mCamera.position.y));
 		
 	
 		//Increment the number of fingers
