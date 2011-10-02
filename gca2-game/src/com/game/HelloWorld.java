@@ -197,7 +197,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 			
 			if(deplacementX > 0.0f || deplacementY > 0.0f ) {
 				halfSec += Gdx.graphics.getDeltaTime();
-			      if(halfSec>0.5f) {
+			      if(halfSec>0.3f) {
 				      if (directionPerso.x >= 0.5) {
 				    	  mSpriteN = 6 + (++mMainCharSpriteState)%3;
 				      }
@@ -314,6 +314,23 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 				);
 			sound.play();
 				//underFinger
+			
+			if (y >= HEIGHT/2) {
+					if(Math.abs(x-WIDTH/2)<WIDTH/3)
+						mSpriteN = 0;
+					else if(x<WIDTH/2)
+						mSpriteN = 3;
+		    	  	else
+		    	  		mSpriteN = 6;
+		    }
+			else  {
+		    	  	if(Math.abs(x-WIDTH/2)<WIDTH/3)
+						mSpriteN = 9;
+		    	  	else if(x<WIDTH/2)
+						mSpriteN = 3;
+		    	  	else
+		    	  		mSpriteN = 6;
+		    }
 				
 				//mRenderTree.addProjectile(positionDoigtUnderFinger, cameraPositionUnderFinger)
 					
@@ -355,7 +372,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	      directionPerso.nor();
 	      	   
 	      halfSec += Gdx.graphics.getDeltaTime();
-	      if(halfSec>0.5f) {
+	      if(halfSec>0.3f) {
 		      if (directionPerso.x >= 0.5) {
 		    	  mSpriteN = 6 + (++mMainCharSpriteState)%3;
 		      }
@@ -411,7 +428,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 	private void create_tiledMap() {
 		final String path = "data/tiledmap/";
-		final String mapname = "foret";
+		final String mapname = "superforest";
 
 		FileHandle mapHandle = Gdx.files.internal(path + mapname + ".tmx");
 		FileHandle baseDir = Gdx.files.internal(path);
@@ -424,7 +441,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		int blockHeight = 12;
 
 		mTileMapRenderer = new TileMapRenderer(this.mMap, this.mAtlas,
-				blockWidth, blockHeight, 50, 50);
+				blockWidth, blockHeight, 6, 6);
 
 		for (TiledObjectGroup group : this.mMap.objectGroups) {
 			for (TiledObject object : group.objects) {
