@@ -30,6 +30,16 @@ public class RenderTree {
 		mStage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
 				false);
 		numberOfMonster = 0;
+<<<<<<< .mine
+		}
+	
+	public void addProjectile( Vector2 direction ) {
+		//Vector2 beginningPosition = new Vector2(positionJoueur.x, positionJoueur.y);// mStage.findActor("mainChar").x, mStage.findActor("mainChar").y);
+		/*Vector2 distanceAParcourir = new Vector2 (
+				(  (positionDoigt.x - Gdx.graphics.getWidth()/2) ),
+				(  (positionDoigt.y) *(-2) + Gdx.graphics.getHeight())  //tentatives
+				);*/
+=======
 	}
 
 	public void addProjectile(Vector2 positionDoigt, Vector2 positionJoueur) {
@@ -51,11 +61,21 @@ public class RenderTree {
 	}
 
 	public void draw() {
+>>>>>>> .r59
 		
+<<<<<<< .mine
+		
+		//distanceAParcourir.nor(); //decommenter seulement si vous avez un t/l/phone assez puissant 
+=======
 		this.instantiateMonsters();
 
 		this.drawChildren();
+>>>>>>> .r59
 		
+<<<<<<< .mine
+		Projectile nouveauProjectile = new Projectile(direction, mStage); 
+		children.add(nouveauProjectile);
+=======
 		Actor mainChar = null;
 		if (mStage.findActor("mainChar") != null) {
 			mainChar = mStage.findActor("mainChar");
@@ -86,6 +106,7 @@ public class RenderTree {
 	private void drawChildren() {
 		Iterator<Node> iter = children.iterator();
 		Node child = null;
+>>>>>>> .r59
 		
 		while (iter.hasNext()) {
 			child = iter.next();
