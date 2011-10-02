@@ -22,7 +22,7 @@ public class RenderTree {
 	
 	static final String nameOfMainCharacterNode= "MainChar";
 	
-	private int maximumNumberOfMonster = 30;
+	private final int maximumNumberOfMonster = 30;
 	private int numberOfMonster = 0;
 		
 	public RenderTree() {
@@ -30,18 +30,6 @@ public class RenderTree {
 		mStage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
 				false);
 		numberOfMonster = 0;
-		//Node mainCharacter = new Node(new Vector3( Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2,1) , nameOfMainCharacterNode, mainCharacterTx, new Vector2(10,10)); 
-		//children.add(mainCharacter);
-		
-		//Node n = new Node(0,0,mT);
-		
-		//main character
-		
-		//children.add(new Node(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2 , nameOfMainCharacterNode, new Vector2(10,10) )) ;
-		
-		//children.add(new Node(300,10, mT2 , "other", new Vector2(0,0) ));
-		//children.add(new Node(0,900, mT ));
-		//children.add(new Node(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), mT));
 		}
 	
 	public void addProjectile( Vector2 positionDoigt, Vector2 positionJoueur) {

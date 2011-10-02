@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class Monster extends Node {
 	static int monsterId = 0;
-	static int MonsterSpeed = 20;
+	static final int MonsterSpeed = 20;
 	
 	private Texture textureMonstre = new Texture(Gdx.files.internal("data/monstreBlanc16.png"));
 	
@@ -71,5 +71,11 @@ public class Monster extends Node {
 			}while(false/*collision()*/);
 		
 		super.setPosition(positionDeDepartX,positionDeDepartY, stage);
+	}
+	
+	@Override
+	public boolean update (Stage stage) {
+		//if (collision(RenderTree.list))
+		return false;
 	}
 }
