@@ -72,9 +72,9 @@ public class BallSplash extends Image {
 			splash.add(new TextureRegion(new Texture(imageFileHandle)));
 		}
 
-		this.mExplosion = new Animation(0.5f, splash);
-		this.mSwipeFromLeft = new Animation(0.2f, swipeleft);
-		this.mSwipeFromRight = new Animation(0.2f, swiperight);
+		this.mExplosion = new Animation(1f, splash);
+		this.mSwipeFromLeft = new Animation(1f, swipeleft);
+		this.mSwipeFromRight = new Animation(1f, swiperight);
 	}
 
 	public void splashIt(Vector2 playerPosition) {
@@ -87,15 +87,20 @@ public class BallSplash extends Image {
 
 		if (this.mElapsedTime <= 1.5f) {
 			this.region = this.mExplosion.getKeyFrame(this.mElapsedTime, false);
-		} else if (this.mSide == Side.RIGHT) {
+		} else if (this.mElapsedTime <= 4.5f){
+			// Keep it alive
+		}else if (this.mSide == Side.RIGHT) {
 			this.region = this.mSwipeFromRight.getKeyFrame(
-					this.mElapsedTime - 1.5f, false);
+					this.mElapsedTime - 4.5f, false);
 		} else if (this.mSide == Side.LEFT) {
 			this.region = this.mSwipeFromLeft.getKeyFrame(
-					this.mElapsedTime - 1.5f, false);
+					this.mElapsedTime - 4.5f, false);
+		}
+		else {
+			// Kill the player
 		}
 
-		if (this.mElapsedTime <= 2.5f && this.region != null) {
+		if (this.mElapsedTime <= 4.5f && this.region != null) {
 			batch.draw(this.region, this.mPlayerPosition.x,
 					this.mPlayerPosition.y);
 		} else {
