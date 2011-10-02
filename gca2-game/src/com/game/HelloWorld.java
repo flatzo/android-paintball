@@ -433,7 +433,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 	private void create_tiledMap() {
 		final String path = "data/tiledmap/";
-		final String mapname = "superforest";
+		final String mapname = "foret";
 
 		FileHandle mapHandle = Gdx.files.internal(path + mapname + ".tmx");
 		FileHandle baseDir = Gdx.files.internal(path);
@@ -446,7 +446,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		int blockHeight = 12;
 
 		mTileMapRenderer = new TileMapRenderer(this.mMap, this.mAtlas,
-				blockWidth, blockHeight, 6, 6);
+				blockWidth, blockHeight, 60, 60);
 
 		for (TiledObjectGroup group : this.mMap.objectGroups) {
 			for (TiledObject object : group.objects) {
