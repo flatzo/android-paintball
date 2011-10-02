@@ -10,12 +10,12 @@ public class Monster extends Node {
 	static int monsterId = 0;
 	static final int MonsterSpeed = 20;
 	
-	private Texture textureMonstre = new Texture(Gdx.files.internal("data/monstreBlanc16.png"));
+	private Texture textureMonstre = new Texture(Gdx.files.internal("data/monstre_face.png"));
 	
 	Monster ( Stage stage) {
 		super(new Vector3(0,0,0), 
 				new String("monster").concat( new Integer(monsterId).toString()),
-				new Texture(Gdx.files.internal("data/monstreBlanc16.png")) ,
+				new Texture(Gdx.files.internal("data/monstre_face.png")) ,
 				new Vector2(MonsterSpeed, MonsterSpeed),
 				stage);
 		
