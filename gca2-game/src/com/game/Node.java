@@ -103,6 +103,11 @@ public class Node {
 	public Image getImage() {
 		return mImage;
 	}
+	
+	public void setPosition( float newX, float newY, Stage stage) {
+		stage.findActor(mName).x = newX;
+		stage.findActor(mName).y = newY;
+	}
 
 
 }

@@ -13,18 +13,23 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+
 public class RenderTree {
 	Vector<Node> children = new Vector<Node> ();
 	Stage mStage;
 	
 	Texture mainCharacterTx = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 	
-	static final String nameOfMainCharacterNode= "MainCharacter";
+	static final String nameOfMainCharacterNode= "MainChar";
+	
+	private int maximumNumberOfMonster = 30;
+	private int numberOfMonster = 0;
 		
 	public RenderTree() {
 		mainCharacterTx = new Texture(Gdx.files.internal("data/badlogic.jpg"));
 		mStage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
 				false);
+		numberOfMonster = 0;
 		//Node mainCharacter = new Node(new Vector3( Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2,1) , nameOfMainCharacterNode, mainCharacterTx, new Vector2(10,10)); 
 		//children.add(mainCharacter);
 		
@@ -60,6 +65,13 @@ public class RenderTree {
 					Node node = children.get(i);
 					children.remove(i);
 					mStage.removeActor(mStage.findActor(node.getName()));
+				}
+			}
+			if (numberOfMonster < maximumNumberOfMonster) {
+				if (Math.random() < (double)0.1) { // 1 chance of of 10 frames
+					children.add((new Monster(mStage)));
+					mStage.addActor(children.lastElement().getImage());
+					numberOfMonster++;
 				}
 			}
 			Actor mainChar = null;
