@@ -17,6 +17,7 @@
 package com.game;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.pm.ActivityInfo;
@@ -50,7 +51,7 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actors.Image;
 import com.badlogic.gdx.scenes.scene2d.actors.Label;
 import com.badlogic.gdx.math.collision.Sphere;
-import com.badlogic.gdx.math.collision.*;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Intersector;
 
@@ -68,6 +69,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	Integer mSpriteN = 0;
 	Float halfSec = 0.0f;
 	List<Image> images = new ArrayList<Image>();
+	List<Sphere> positionBoites = new ArrayList<Sphere>();
     
     //Deplacement du mainChar
 	float mcharSpeed = 2.5f;
@@ -81,6 +83,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	TileMapRenderer mTileMapRenderer;
 	TiledMap mMap;
 	TileAtlas mAtlas;
+	
 
 	// Audio
 	Music music;
@@ -111,7 +114,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 
 		// Stage pour scene2D
 		mT = new Texture (Gdx.files.internal("data/ball.png"));
-		texture = new Texture(Gdx.files.internal("data/mainchar.png"));
+		texture = new Texture(Gdx.files.internal("data/main_char.png"));
         mMainCharBatch = new SpriteBatch();
         mMainCharRegions[0] = new TextureRegion(texture, 0, 	0, 		0.25f, 	0.25f);
         mMainCharRegions[1] = new TextureRegion(texture, 0.25f, 0, 		0.5f, 	0.25f);
@@ -180,7 +183,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		
 		
 		
-		if(Gdx.input.isTouched()){
+		if(Gdx.input.isTouched() && !isCollision(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2)){
 			
 			
 			
@@ -302,7 +305,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		mNumberOfFingers++;
 		
 		//underFinger
-		if ( !isOnThePlayer(x,y)) {
+		if ( mNumberOfFingers <= 2 && !isOnThePlayer(x,y)) {
 			mRenderTree.addProjectile(
 				
 				new Vector2(touchPosition.x,
@@ -370,22 +373,24 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	       directionPerso = new Vector3(mInputX-(Gdx.graphics.getWidth()/2),
 	    		   						mInputY-(Gdx.graphics.getHeight()/2),0);
 	      directionPerso.nor();
-	      	   
+	     
+	      if(!isCollision(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2)) {
+	      
 	      halfSec += Gdx.graphics.getDeltaTime();
 	      if(halfSec>0.3f) {
 		      if (directionPerso.x >= 0.5) {
-		    	  mSpriteN = 6 + (++mMainCharSpriteState)%3;
+		    	  mSpriteN = 6 + (++mMainCharSpriteState)%3;}
+			      else if (directionPerso.x <= -0.5) {
+			    	  mSpriteN = 3 + (++mMainCharSpriteState)%3;
+			      }
+			      else if (directionPerso.y >= 0.5) {
+			    	  mSpriteN = 9 + (++mMainCharSpriteState)%3;
+			      }
+			      else {
+			    	  mSpriteN = (++mMainCharSpriteState)%3;
+			      }
+			      halfSec = 0.0f;
 		      }
-		      else if (directionPerso.x <= -0.5) {
-		    	  mSpriteN = 3 + (++mMainCharSpriteState)%3;
-		      }
-		      else if (directionPerso.y >= 0.5) {
-		    	  mSpriteN = 9 + (++mMainCharSpriteState)%3;
-		      }
-		      else {
-		    	  mSpriteN = (++mMainCharSpriteState)%3;
-		      }
-		      halfSec = 0.0f;
 	      }
 	      
 		}
@@ -446,6 +451,8 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		for (TiledObjectGroup group : this.mMap.objectGroups) {
 			for (TiledObject object : group.objects) {
 				// TODO: Draw sprites where objects occur
+				
+				positionBoites.add(new Sphere(new Vector3(object.x, object.y, 0),50));
 				System.out.println("Object " + object.name + " x,y = "
 						+ object.x + "," + object.y + " width,height = "
 						+ object.width + "," + object.height);
@@ -487,8 +494,21 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 			isOnThePlayer = false;
 			return false;
 		}
-		
-			
 	}
+	
+	private boolean isCollision(int x, int y){
+		Sphere sphere = new Sphere(new Vector3(x,y,0),50);
+
+		Iterator<Sphere> itr = positionBoites.iterator();
+	    while (itr.hasNext()) {
+	      Sphere element = itr.next();
+	      if(element.overlaps(sphere))
+	    	  return true;
+	    }
+			
+		return false;
+	}
+	
+	
 
 }
