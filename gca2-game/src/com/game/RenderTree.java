@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class RenderTree {
@@ -61,7 +62,18 @@ public class RenderTree {
 					mStage.removeActor(mStage.findActor(node.getName()));
 				}
 			}
+			Actor mainChar = null;
+			if(mStage.findActor("mainChar")!=null) {
+				mainChar = mStage.findActor("mainChar");
+				mStage.removeActor(mainChar);
+			}
+			
 			mStage.draw();
+			
+			if(mainChar!=null) {
+				mStage.addActor(mainChar);
+			}
+			
 			//children.get(0).draw(0,0);
 			//children.get(1).draw(0,0);
 		}

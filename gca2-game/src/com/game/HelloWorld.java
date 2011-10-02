@@ -45,6 +45,7 @@ import com.badlogic.gdx.graphics.g2d.tiled.TiledObjectGroup;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actors.Image;
 import com.badlogic.gdx.scenes.scene2d.actors.Label;
@@ -55,12 +56,17 @@ import com.badlogic.gdx.math.Intersector;
 
 public class HelloWorld implements ApplicationListener, InputProcessor {
 	
+	Texture mT;
 	Texture texture;
 	BitmapFont font;
 	Vector2 textPosition = new Vector2(100, 100);
 	Vector2 textDirection = new Vector2(1, 1);
 	RenderTree mRenderTree;
-	
+	SpriteBatch mMainCharBatch;
+	TextureRegion[] mMainCharRegions = new TextureRegion[12];
+	Integer mMainCharSpriteState = 0;
+	Integer mSpriteN = 0;
+	Float halfSec = 0.0f;
 	List<Image> images = new ArrayList<Image>();
     
     //Deplacement du mainChar
@@ -104,14 +110,27 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	public void create() {
 
 		// Stage pour scene2D
-
-		Texture mT = new Texture(Gdx.files.internal("data/ball.png"));
-		Texture mT2 = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+		mT = new Texture (Gdx.files.internal("data/ball.png"));
+		texture = new Texture(Gdx.files.internal("data/main_char.png"));
+        mMainCharBatch = new SpriteBatch();
+        mMainCharRegions[0] = new TextureRegion(texture, 0, 	0, 		0.25f, 	0.25f);
+        mMainCharRegions[1] = new TextureRegion(texture, 0.25f, 0, 		0.5f, 	0.25f);
+        mMainCharRegions[2] = new TextureRegion(texture, 0.5f, 	0, 		0.75f, 	0.25f);
+        mMainCharRegions[3] = new TextureRegion(texture, 0, 	0.25f, 	0.25f, 	0.5f);
+        mMainCharRegions[4] = new TextureRegion(texture, 0.25f, 0.25f, 	0.5f, 	0.5f);
+        mMainCharRegions[5] = new TextureRegion(texture, 0.5f, 	0.25f, 	0.75f, 	0.5f);
+        mMainCharRegions[6] = new TextureRegion(texture, 0, 	0.5f, 	0.25f, 	0.75f);
+        mMainCharRegions[7] = new TextureRegion(texture, 0.25f, 0.5f, 	0.5f, 	0.75f);
+        mMainCharRegions[8] = new TextureRegion(texture, 0.5f,	0.5f, 	0.75f, 	0.75f);
+        mMainCharRegions[9] = new TextureRegion(texture, 0, 	0.75f, 	0.25f, 	1.0f);
+        mMainCharRegions[10] = new TextureRegion(texture, 0.25f,0.75f, 	0.5f, 	1.0f);
+        mMainCharRegions[11] = new TextureRegion(texture, 0.5f, 0.75f, 	0.75f, 1.0f);
+		
 		Texture textureProjectile = new Texture(Gdx.files.internal("data/projectile.png"));
 		
 		
 		Image mainChar = new Image("mainChar", mT);
-		Image backGround = new Image("background", mT2);
+		//Image backGround = new Image("background", mT2);
 		Image projectile = new Image("projectile1", textureProjectile);
 		
 		mainChar.x = Gdx.graphics.getWidth() / 2;
@@ -154,7 +173,11 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		this.mCamera.apply(gl);
 		this.mTileMapRenderer.render((OrthographicCamera) mRenderTree.getStage().getCamera());
 		
+		
+		
 		if(Gdx.input.isTouched()){
+			
+			
 			
 			Vector3 position = new Vector3(mInputX,mInputY,0);
 			Camera camera = mRenderTree.getStage().getCamera();
@@ -167,6 +190,25 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 			mRenderTree.getStage().findActor("mainChar").y += deplacementY;
 			camera.translate(0f,deplacementY,0f);
 			
+			if(deplacementX > 0.0f || deplacementY > 0.0f ) {
+				halfSec += Gdx.graphics.getDeltaTime();
+			      if(halfSec>0.5f) {
+				      if (directionPerso.x >= 0.5) {
+				    	  mSpriteN = 6 + (++mMainCharSpriteState)%3;
+				      }
+				      else if (directionPerso.x <= -0.5) {
+				    	  mSpriteN = 3 + (++mMainCharSpriteState)%3;
+				      }
+				      else if (directionPerso.y >= 0.5) {
+				    	  mSpriteN = 9 + (++mMainCharSpriteState)%3;
+				      }
+				      else {
+				    	  mSpriteN = (++mMainCharSpriteState)%3;
+				      }
+				      halfSec = 0.0f;
+			      }
+			}
+			
 			camera.update();
 			camera.apply(gl);
 		}
@@ -176,7 +218,9 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		mRenderTree.draw();
 		
 		
-
+		mMainCharBatch.begin();    
+			mMainCharBatch.draw(mMainCharRegions[mSpriteN], WIDTH/2, HEIGHT/2, 48, 48);
+		mMainCharBatch.end();
 		
 	}
 
@@ -261,7 +305,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 				
 				new Vector2(
 				mRenderTree.getStage().findActor("mainChar").x,
-				mRenderTree.getStage().findActor("mainChar").y )
+				mRenderTree.getStage().findActor("mainChar").y)
 				);
 			sound.play();
 				//underFinger
@@ -304,6 +348,24 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	       directionPerso = new Vector3(mInputX-(Gdx.graphics.getWidth()/2),
 	    		   						mInputY-(Gdx.graphics.getHeight()/2),0);
 	      directionPerso.nor();
+	      	   
+	      halfSec += Gdx.graphics.getDeltaTime();
+	      if(halfSec>0.5f) {
+		      if (directionPerso.x >= 0.5) {
+		    	  mSpriteN = 6 + (++mMainCharSpriteState)%3;
+		      }
+		      else if (directionPerso.x <= -0.5) {
+		    	  mSpriteN = 3 + (++mMainCharSpriteState)%3;
+		      }
+		      else if (directionPerso.y >= 0.5) {
+		    	  mSpriteN = 9 + (++mMainCharSpriteState)%3;
+		      }
+		      else {
+		    	  mSpriteN = (++mMainCharSpriteState)%3;
+		      }
+		      halfSec = 0.0f;
+	      }
+	      
 		}
 
 		return false;
@@ -386,7 +448,8 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	 * Verify if the the finger is on the player
 	 *
 	 */
-	private boolean isOnThePlayer(int x, int y){
+	private boolean isOnThePlayer(int x, int y) {
+	
 		
 		
 		float fingerX = x, fingerY = Gdx.graphics.getHeight() - y;
@@ -402,7 +465,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 			isOnThePlayer = false;
 			return false;
 		}
-			
+		
 			
 	}
 
