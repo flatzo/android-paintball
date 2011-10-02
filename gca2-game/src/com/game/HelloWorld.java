@@ -93,8 +93,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 	OrthographicCamera mCamera;
 
 	// Constants
-	static final int WIDTH = 480;
-	static final int HEIGHT = 320;
+
 
 	Vector3 tmp = new Vector3();
 	Vector3 spritePosition = new Vector3();
@@ -129,13 +128,10 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
         mMainCharRegions[10] = new TextureRegion(texture, 0.25f,0.75f, 	0.5f, 	1.0f);
         mMainCharRegions[11] = new TextureRegion(texture, 0.5f, 0.75f, 	0.75f, 1.0f);
 		
-		Texture textureProjectile = new Texture(Gdx.files.internal("data/projectile.png"));
 		
 		
 		Image mainChar = new Image("mainChar", mT);
 
-		//Image backGround = new Image("background", mT2);
-		Image projectile = new Image("projectile1", textureProjectile);
 		
 		mainChar.x = Gdx.graphics.getWidth() / 2;
 		mainChar.y = Gdx.graphics.getHeight() / 2;
@@ -226,7 +222,7 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		
 		
 		mMainCharBatch.begin();    
-			mMainCharBatch.draw(mMainCharRegions[mSpriteN], WIDTH/2, HEIGHT/2, 48, 48);
+			mMainCharBatch.draw(mMainCharRegions[mSpriteN], (Gdx.graphics.getWidth()/2)-16, (Gdx.graphics.getHeight()/2)-16, 32, 32);
 		mMainCharBatch.end();
 		
 	}
@@ -305,19 +301,29 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		mNumberOfFingers++;
 		
 		//underFinger
-		if ( mNumberOfFingers <= 2 && !isOnThePlayer(x,y)) {
-			mRenderTree.addProjectile(
-				
-				new Vector2(touchPosition.x,
-						(touchPosition.y) ),
-				
-				new Vector2(
-				mRenderTree.getStage().findActor("mainChar").x,
-				mRenderTree.getStage().findActor("mainChar").y)
-				);
+		if ( mNumberOfFingers <= 2 && !(x==0&&y==0) && !isOnThePlayer(x,y)) {
+		
+			mRenderTree.addProjectile(new Vector2(touchPosition.x-Gdx.graphics.getWidth()/2, -touchPosition.y+Gdx.graphics.getHeight()/2));
 			sound.play();
 				//underFinger
-					
+			
+			if (y >= Gdx.graphics.getHeight()/2) {
+					if(Math.abs(x-Gdx.graphics.getWidth()/2)<Gdx.graphics.getWidth()/3)
+						mSpriteN = 0;
+					else if(x<Gdx.graphics.getWidth()/2)
+						mSpriteN = 3;
+		    	  	else
+		    	  		mSpriteN = 6;
+		    }
+			else  {
+		    	  	if(Math.abs(x-Gdx.graphics.getWidth()/2)<Gdx.graphics.getWidth()/3)
+						mSpriteN = 9;
+		    	  	else if(x<Gdx.graphics.getWidth()/2)
+						mSpriteN = 3;
+		    	  	else
+		    	  		mSpriteN = 6;
+		    }
+				
 				//mRenderTree.addProjectile(positionDoigtUnderFinger, cameraPositionUnderFinger)
 					
 		}
@@ -327,22 +333,6 @@ public class HelloWorld implements ApplicationListener, InputProcessor {
 		       mFingerOnePointer = pointer;
 		       mFingerOne.set(x, y, 0);
 		       
-		    if (y >= HEIGHT/2) {
-					if(Math.abs(x-WIDTH/2)<WIDTH/3)
-						mSpriteN = 0;
-					else if(x<WIDTH/2)
-						mSpriteN = 3;
-		    	  	else
-		    	  		mSpriteN = 6;
-		    }
-			else  {
-		    	  	if(Math.abs(x-WIDTH/2)<WIDTH/3)
-						mSpriteN = 9;
-		    	  	else if(x<WIDTH/2)
-						mSpriteN = 3;
-		    	  	else
-		    	  		mSpriteN = 6;
-		    }
 		       
 		       //directionPerso.nor();
 		       

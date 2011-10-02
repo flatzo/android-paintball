@@ -49,8 +49,8 @@ public class BallSplash extends Image {
 
 		this.mTransparent = new TextureRegion(new Texture(imageFileHandle));
 
-		this.height = HelloWorld.HEIGHT;
-		this.width = HelloWorld.WIDTH;
+		this.height = Gdx.graphics.getHeight();
+		this.width = Gdx.graphics.getWidth();
 
 		ArrayList<TextureRegion> swipeleft = new ArrayList<TextureRegion>();
 		ArrayList<TextureRegion> swiperight = new ArrayList<TextureRegion>();
@@ -124,7 +124,7 @@ public class BallSplash extends Image {
 
 	@Override
 	public void touchDragged(float x, float y, int pointer) {
-		if (x <= HelloWorld.WIDTH / 2) {
+		if (x <= Gdx.graphics.getWidth() / 2) {
 			this.mSide = Side.LEFT;
 		} else {
 			this.mSide = Side.RIGHT;
